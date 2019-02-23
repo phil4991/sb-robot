@@ -70,16 +70,24 @@ def reset_pin(pins):
 
 
 def setup():
-	print('test')
 
 	lDr = DCMotor('leftDrive')
 	rDr = DCMotor('rightDrive')
 
-	lDr = lDr.set_pins([
+	lDr = lDr.set_pins(
+		[
+			0,		# enable
+			22, 	# in1
+			23,		# in2
+		])
+	rDr = rDr.set_pins(
+		[
+			2,	# enable
+			24,	# in1
+			25,	# in2
+		])
 
-		]
-
-		)
+	print('initialized')
 
 def loop():
 	print('loop')
