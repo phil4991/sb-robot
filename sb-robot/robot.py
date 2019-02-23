@@ -10,9 +10,9 @@ import sys
 
 GPIO.setmode(GPIO.BOARD)
 
+global OUTPUT, INPUT
 OUTPUT = GPIO.OUT
 INPUT = GPIO.IN
-
 
 class DCMotor:
 	"""docstring for DCMotor"""
@@ -28,9 +28,6 @@ class DCMotor:
 		#declare all output pins
 		for name, pin in self._pins.items():
 			GPIO.setup(pin, OUTPUT)
-
-	def set_name(self, name):
-		self._name = name
 
 	def set_pins(self, pin_list):
 		if type(pin_list) is list:
@@ -75,6 +72,15 @@ def reset_pin(pins):
 def setup():
 	print('test')
 
+	lDr = DCMotor('leftDrive')
+	rDr = DCMotor('rightDrive')
+
+	lDr = lDr.set_pins([
+
+		]
+
+		)
+
 def loop():
 	print('loop')
 
@@ -89,7 +95,7 @@ setup()
 
 try:
 	while True:
-	loop()
+		loop()
 except KeyboardInterrupt:
 	pass
 
