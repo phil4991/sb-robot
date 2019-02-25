@@ -7,8 +7,7 @@ Main Robot Code 2019-02-23
 import RPi.GPIO as GPIO
 import sys
 
-
-GPIO.setmode(GPIO.BOARD)
+from time import sleep
 
 global OUTPUT, INPUT
 OUTPUT = GPIO.OUT
@@ -16,81 +15,48 @@ INPUT = GPIO.IN
 
 class DCMotor:
 	"""docstring for DCMotor"""
-	_name = 'noName'
-	_pins = { 	'enableA'	: None,
-				'in1'		: None,
-				'in2'		: None,
-	}
 
-	def __init__(self, name):
+
+	def __init__(self, name, pinList):
 		self._name = name
+		self._pins = { 	'en'		: pinList[0],
+						'in1'		: pinList[1],
+						'in2'		: pinList[2],
+					}
 
-		#declare all output pins
-		for name, pin in self._pins.items():
-			GPIO.setup(pin, OUTPUT)
-
-	def set_pins(self, pin_list):
-		if type(pin_list) is list:
-			i = 0
-			for name, number in self._pins.items():
-				self._pins[name] = pin_list[i]
-				i += 1
-		else:
-			print('Define pins in a list!\n')
-			sys.exit()
-
+		GPIO.setup(pinList, OUTPUT)
+		print(self._name, 'initialized ->', self._pins)
 
 
 	def drive_cw(self):
-		GPIO.output(self._pins['enableA'], True)
+		GPIO.output(self._pins['en'], True)
 		GPIO.output(self._pins['in1'], True)
 		GPIO.output(self._pins['in2'], False)
 
+
 	def drive_ccw(self):
-		GPIO.output(self._pins['enableA'], True)
+		GPIO.output(self._pins['en'], True)
 		GPIO.output(self._pins['in1'], False)
 		GPIO.output(self._pins['in2'], True)
 
+
 	def idle(self):
-		GPIO.output(self._pins['enableA'], False)
+		GPIO.output(self._pins['en'], False)
+
 
 	def stop(self):
-		GPIO.output(self._pins['enableA'], True)
+		GPIO.output(self._pins['en'], True)
 		GPIO.output(self._pins['in1'], False)
 		GPIO.output(self._pins['in2'], False)
 
 
-
-		
-
 def reset_pin(pins):
-	print('reset pins')
+	print('\nreset pins')
 	for number in pins:
 		GPIO.output(number, False)
 
 
-def setup():
 
-	lDr = DCMotor('leftDrive')
-	rDr = DCMotor('rightDrive')
-
-	lDr = lDr.set_pins(
-		[
-			0,		# enable
-			22, 	# in1
-			23,		# in2
-		])
-	rDr = rDr.set_pins(
-		[
-			2,	# enable
-			24,	# in1
-			25,	# in2
-		])
-
-	print('initialized')
-
-def loop():
-	print('loop')
 
 
 
@@ -98,14 +64,54 @@ def loop():
 MAIN PROGRAM 
 
 
-'''
-setup()
 
-try:
-	while True:
-		loop()
-except KeyboardInterrupt:
-	pass
+'''
+if __name__ == '__main__':
+	try:
+		GPIO.setmode(GPIO.BCM)
+
+		lDr = DCMotor(	name = 'leftDrive', 
+						pinList = [
+									21,		# enA
+									16, 	# in1
+									20,		# in2
+									])
+		rDr = DCMotor(	name = 'rightDrive',
+						pinList = [
+									26,		# enB
+									19,		# in3
+									13,		# in4
+									])
+
+		reset_pin([
+			21, 16, 20,	# left motor
+			26, 19, 13, # right motor
+			])
+
+		print('initialized')
+
+		while True:
+			lDr.drive_cw()
+			rDr.drive_cw()
+			print('drive cw')
+			sleep(5)
+
+			lDr.drive_ccw()
+			rDr.drive_ccw()
+			print('drive ccw')
+			sleep(5)
+
+
+
+
+	except KeyboardInterrupt:
+		reset_pin([
+			21, 16, 20,	# left motor
+			26, 19, 13, # right motor
+			])
+
+	finally:
+		GPIO.cleanup()
 
 
 
