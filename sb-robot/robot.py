@@ -253,7 +253,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         reset_pin([
             12, 20, 16,     # left motor
-            13, 26, 19      # right motor
+            13, 26, 19,     # right motor
             pBT_status,     # BT status LED
             ])
 
