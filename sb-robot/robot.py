@@ -14,8 +14,8 @@ from signal     import pause
 global OUTPUT, INPUT, PUP, PDWN, BTdeviceName, BTdeviceMAC
 OUTPUT = GPIO.OUT
 INPUT = GPIO.IN
-PUP = RPIO.PUD_UP
-PDWN = RPIO.PUD_DOWN
+PUP = GPIO.PUD_UP
+PDWN = GPIO.PUD_DOWN
 
 BTdeviceName = 'OnePlus 6'
 BTdeviceMAC =  '64:A2:F9:2F:6A:9B' #'1C:AF:05:22:FE:43'
@@ -191,7 +191,7 @@ if __name__ == '__main__':
         GPIO.setmode(GPIO.BCM)
 
         # init bluetooth LED
-        GPIO.setup(pBT_status, OUTPUT, pull_up_down=PDWN)
+        GPIO.setup(pBT_status, OUTPUT)
 
         # init DC motors
         motorL = DCMotor(   pinList = [
