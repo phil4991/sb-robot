@@ -6,7 +6,8 @@ once its finished.
 
 
 **Project directory **
-
+`import sb-robot`
+then..
 `sb-robot/
 │
 ├── docs/
