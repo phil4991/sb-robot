@@ -1,0 +1,9 @@
+# Specify filepatterns you want git to ignore.
+
+bt-module.py
+command_test.py
+
+*.pyc
+*.pyo
+
+docs/
