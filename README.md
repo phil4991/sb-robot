@@ -1,11 +1,11 @@
 # Selfbalancing Robot Project 2019-02-23
 
-The robot projects came to my mind as an  introduction to mobile robotics and 
+The robot projects came to my mind as an introduction to mobile robotics and 
 control theory. The robot is fully designed by my own and will stabilze it self 
 once its finished.
 
 ## Status overview
-2019-08 implementing `drivecontroller/` module..
+2019-08 implementing `drivecontroller/` & `core/` modules..
 
 2019-07 tested the controller code on the RPi
 
@@ -19,6 +19,10 @@ sb-robot/
 │
 ├── sb-robot/
 │   ├── robot.py
+│   ├── core/
+│   │   ├── events.py
+│   │   └── state.py
+│   │
 │   ├── drivecontroller/
 │   │   ├── drivecontroller.py
 │   │   └── helpers.py
@@ -40,5 +44,5 @@ sb-robot/
 │       └── sensors_tests.py
 │
 ├── .gitignore
-├── LICENSE
-└── README.md```
+└── README.md
+```
