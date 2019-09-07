@@ -4,16 +4,19 @@ import RPi.GPIO as GPIO
 
 # modules
 from core.events 	import Event, Handler # module not found! in init übernehmen?
-from BlueDot 		import BlueDot
+from core.state 	import State
+from bluedot 		import BlueDot
 
 
 class Controller():
 	def configure(self, config):
 		pass
 
-class RobotEventHandler(Handler):
-	def __init__(self):
+class RobotEventObserver(Observer):
+	def State_changed_Cb(self):
 		pass
+
+
 
 class DCMotor:
 	def __init__(self, name, PINS = [0, 0, 0], PWM_Frequecy = 200 ):
@@ -68,14 +71,29 @@ class RobotController(Controller):
 		self.EventHandler 	= None
 		self.DAQController 	= None
 
+		self.State 			= None
+
 
 	def configure(self, config):
 
-		GPIO.setup(self._OUTPUT, GPIO.OUT)
-		GPIO.setup(self._INPUT, GPIO.IN)
-
 		if not self.SensorController:
-			self.DAQController.configure()
+			self.DAQController.configure(config)
+
+		print('initializing hardware...')
+
+		for pins in config['gpio']:
+			if pins['type'] is 'IN':
+				GPIO.setup(self._INPUT, GPIO.IN)
+			elif pins['type']	is 'OUT':
+				GPIO.setup(pins['pins'], GPIO.OUT)
+			else:
+				print('Warning! unrecognized pintype')	
+
+		self._leftMotor = DCMotor('leftMotor', config['gpio'][0]['pins'])
+		self._rightMotor = DCMotor('rightMotor', config['gpio'][1]['pins'])
+
+
+
 		
 
 class BTCallback:
@@ -90,6 +108,4 @@ class BTCallback:
 if __name__ == '__main__':
 	
 	MyRobot = RobotController()
-	MyRobot.configure()
-
-	MyRobot.BT.wait_for_connection()
+	print(MyRobot)

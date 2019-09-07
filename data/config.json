@@ -1,0 +1,30 @@
+{
+  "core": {
+    "name": "core"
+  },
+  "bt": {
+    "devs": [
+      "OnePlus 6"
+    ],
+    "MAC": [
+      "64:A2:F9:2F:6A:9B"
+    ]
+  },
+  "gpio": [
+    {
+      "name": "leftMotor",
+      "type": "OUT",
+      "pins": []
+    },
+    {
+      "name": "rightMotor",
+      "type": "OUT",
+      "pins": []
+    },
+    {
+      "name": "StatusLED_BT",
+      "type": "OUT",
+      "pins": []
+    }
+  ]
+}
