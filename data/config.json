@@ -2,6 +2,9 @@
   "core": {
     "name": "core"
   },
+  "motorGLOBAL": {
+    "f_PWM": 200
+  },
   "bt": {
     "devs": [
       "OnePlus 6"
@@ -12,19 +15,29 @@
   },
   "gpio": [
     {
+      "pins": [
+        12,
+        20,
+        16
+      ],
       "name": "leftMotor",
-      "type": "OUT",
-      "pins": []
+      "type": "OUT"
     },
     {
+      "pins": [
+        13,
+        26,
+        19
+      ],
       "name": "rightMotor",
-      "type": "OUT",
-      "pins": []
+      "type": "OUT"
     },
     {
+      "pins": [
+        14
+      ],
       "name": "StatusLED_BT",
-      "type": "OUT",
-      "pins": []
+      "type": "OUT"
     }
   ]
 }

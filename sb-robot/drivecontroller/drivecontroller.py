@@ -1,9 +1,9 @@
 # standards
 import RPi.GPIO as GPIO
-
+GPIO.setmode(GPIO.BCM)
 
 # modules
-from core.events 	import Event, Handler # module not found! in init übernehmen?
+from core.events 	import Event, Observer # module not found! in init übernehmen?
 from core.state 	import State
 from bluedot 		import BlueDot
 
@@ -76,7 +76,7 @@ class RobotController(Controller):
 
 	def configure(self, config):
 
-		if not self.SensorController:
+		if self.DAQController is not None:
 			self.DAQController.configure(config)
 
 		print('initializing hardware...')

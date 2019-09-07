@@ -15,11 +15,11 @@ from drivecontroller.drivecontroller 	import (RobotController,
 												BTCallback, 
 												RobotEventObserver)
 
-APP_DIRECTORY 	= 'sb-robot/sb-robot'
+APP_DIRECTORY 	= 'sb-robot'
 DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
 
 CONFIG_FILE = 'config.json'
-CONFIG_PATH = os.path.join.(DATA_DIRECTORY, CONFIG_FILE)
+CONFIG_PATH = os.path.join(DATA_DIRECTORY, CONFIG_FILE)
 
 config = Configuration.importConfig(CONFIG_PATH)
 

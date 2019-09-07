@@ -17,7 +17,7 @@ class Configuration:
 		pass
 
 if __name__ == '__main__':
-	APP_DIRECTORY 	= 'sb-robot/sb-robot'
+	APP_DIRECTORY 	= 'sb-robot'
 	DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
 
 	CONFIG_FILE = 'config.json'
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 						"pins": [14]}]}
 
 
-	# Configuration.exportConfig(config_in, os.path.join(DATA_DIRECTORY, CONFIG_FILE))
+	Configuration.exportConfig(config_in, os.path.join(DATA_DIRECTORY, CONFIG_FILE))
 	c = Configuration.importConfig(os.path.join(DATA_DIRECTORY, CONFIG_FILE))
 
 	print(c)
