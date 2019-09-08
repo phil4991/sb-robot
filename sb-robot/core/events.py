@@ -10,15 +10,17 @@ class Observer():
 	_observers = []
 	def __init__(self):
 		self._observers.append(self)
-		self._events = []
-		self._callbacks = []
+		
+		# event names and corresponding callbacks referenced in dict
+		self._database = {}
 
 	def register(self, eventObj, callback):
-		self._events.append(eventObj)
-		self._callbacks.append(callback)
+		if iscallable(callback):
+			self._database[eventObj.name] = callback
+		else:
+			ValueError('Error! registered event is not callable')
 
 	def unregister(self, eventObj):
-		# filter?
 		if eventObj in self._events:
 			i = self._events.index(eventObj)
 
@@ -29,7 +31,7 @@ class Observer():
 
 
 class Event():
-	_nEvents = -1
+	_nEvents = 0
 	def __init__(self, name):
 		self._nEvents += 1
 		self.name = name
