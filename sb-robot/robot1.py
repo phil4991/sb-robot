@@ -6,14 +6,13 @@ import os, sys
 if sys.platform != 'win32':
 	assert os.getuid() == 0, "root privilage is needed. run as sudo"
 
+from signal import wait
 
 from core.helpers 						import Configuration
-from core.state							import State
 from core.events						import Event
 
 from drivecontroller.drivecontroller 	import (RobotController, 
-												BTCallback, 
-												RobotEventObserver)
+												BTObserver)
 
 APP_DIRECTORY 	= 'sb-robot'
 DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
@@ -27,9 +26,25 @@ config = Configuration.importConfig(CONFIG_PATH)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # 
 
-MyRobot = RobotController()
+controller 	= RobotController()
+bluedot 	= BlueDot()
+bt_observer = BTObserver()
 
+controller.configure(config)
 
-MyRobot.configure(config)
-MyRobot.BT.wait_for_press()
-print('pressed')
+movedDot = Event('movedDotEvent')
+pressedDot = Event('pressedDotEvent')
+releasedDot = Event('releasedDotEvent')
+
+bt_observer.register(movedDot, bt_observer.movedDot)
+bt_observer.register(pressedDot, bt_observer.pressedDot)
+bt_observer.register(releasedDot, bt_observer.releasedDot)
+
+bluedot.set_when_moved(movedDot)
+bluedot.set_when_pressed(pressedDot)
+bluedot.set_when_released(releasedDot)
+
+bluedot.wait_for_press()
+
+while True:
+	x = 1

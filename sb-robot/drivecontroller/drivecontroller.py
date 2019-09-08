@@ -1,26 +1,19 @@
 # standards
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
+import abc
 
 # modules
 from core.events 	import Event, Observer # module not found! in init übernehmen?
 from core.state 	import State
 from bluedot 		import BlueDot
 
-
-class Controller():
-	def configure(self, config):
-		pass
-
-class RobotEventObserver(Observer):
-	def State_changed_Cb(self):
-		pass
-
-
+LEFT = 0
+RIGHT = 1
 
 class DCMotor:
-	def __init__(self, name, PINS = [0, 0, 0], PWM_Frequecy = 200 ):
-		if all(PINS) == 0:
+	def __init__(self, name, PINS, PWM_Frequecy = 200 ):
+		if len(PINS) == 0:
 			raise ValueError('no pins passed')
 		try:
 			GPIO.setup(PINS, GPIO.OUT)
@@ -51,27 +44,24 @@ class DCMotor:
 
 	#### TO BE TESTED
 	# PWM or digitial?
-	def idle(self):
+	def set_idle(self):
 		GPIO.output(self._pins['en'], False)
 
 
-	def stop(self):
+	def set_stop(self):
 		self._PWM_Obj.stop()
 		GPIO.output(self._pins['IN_1'], False)
 		GPIO.output(self._pins['IN_2'], False)
 
 
-class RobotController(Controller):
+class RobotController:
 	def __init__(self):
+		self._motors	= {	LEFT: None,
+							RIGHT: None}
+		self._mode = None
+		self.command = None
 
-		self._leftMotor 	= None
-		self._rightMotor 	= None
-
-		self.BT 			= BlueDot()
-		self.EventHandler 	= None
 		self.DAQController 	= None
-
-		self.State 			= None
 
 
 	def configure(self, config):
@@ -83,25 +73,44 @@ class RobotController(Controller):
 
 		for pins in config['gpio']:
 			if pins['type'] is 'IN':
-				GPIO.setup(self._INPUT, GPIO.IN)
+				GPIO.setup(pins['pins'], GPIO.IN)
 			elif pins['type']	is 'OUT':
 				GPIO.setup(pins['pins'], GPIO.OUT)
 			else:
 				print('Warning! unrecognized pintype')	
 
-		self._leftMotor = DCMotor('leftMotor', config['gpio'][0]['pins'])
-		self._rightMotor = DCMotor('rightMotor', config['gpio'][1]['pins'])
-
-
-
+		self._motors[LEFT] = DCMotor(LEFT, config['gpio'][LEFT]['pins'])
+		self._motors[RIGHT] = DCMotor(RIGHT, config['gpio'][RIGHT]['pins'])
+	def close(self):
+		GPIO.cleanup()
 		
+	def set_mode(self, mode):
+		self._mode = mode
 
-class BTCallback:
+
+class BTObserver(Observer):
+	def __init__(self):
+		super().__init__(self)
+
+		self._BT_Interaction = None
+
 	def movedDot():
-		pass
+		print('moved')
 	def releasedDot():
-		pass
+		print('\n','released')
 	def pressedDot():
+		print('pressed\n')
+
+	def getCommand(self):
+		return self.command.getCommand()
+
+class Command(abc.ABC):
+	def __init__(self):
+		self.throttle = 0
+		self.direction = 0
+
+	@abc.abstractmethod
+	def _getThrottle(self, command):
 		pass
 
 
@@ -109,3 +118,10 @@ if __name__ == '__main__':
 	
 	MyRobot = RobotController()
 	print(MyRobot)
+
+	movedDot = Event('movedDotEvent')
+	pressedDot = Event('pressedDotEvent')
+	releasedDot = Event('releasedDotEvent')
+
+	bt_observer = BTObserver()
+	bt_observer.register(movedDot, bt_observer.movedDot)
