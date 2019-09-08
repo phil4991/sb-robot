@@ -34,13 +34,17 @@ class Event():
 		self._nEvents += 1
 		self.name = name
 
-	def fire(self, arg):
+	def fire(self, arg = None):
 		for i, observer in enumerate(Observer._observers):
 			if self._nEvents == -1:
 				assert 0, "no handler found"
 			elif self._nEvents == i:
-				print('called ', observer._callbacks[i])
-				observer._callbacks[i](arg)
+				if arg != None:
+					print('called w\ arg ', observer._callbacks[i])
+					observer._callbacks[i](arg)
+				else:
+					print('called w\o arg ', observer._callbacks[i])
+					observer._callbacks[i]()
 
 
 
@@ -50,21 +54,29 @@ class Event():
 if __name__ == '__main__':
 
 	# Test!
-	class Room(Handler):
+	class Room(Observer):
 		def __init__(self):
 		    print("Room is ready.")
-		    Handler.__init__(self) # Observer's init needs to be called
+		    super().__init__() # Observer's init needs to be called
 		def someone_arrived(self, who):
 		    print(who + " has arrived!")
+		def someone_left(self):
+		    print('someone left!')
 
 
 
 	room = Room()
 	room1 = Room()
 	e1 = Event('ArriveEvent')
+	e2 = Event('LeaveEvent')
+	print(room._observers)
 
-	room.listen(e1,  room.someone_arrived)
-	print(room._events)
+	room.register(e1,  room.someone_arrived)
+	room.register(e2,  room.someone_left)
+	print('events registered ', room._events)
+	
+	
 
 
 	e1.fire('test')
+	e2.fire()

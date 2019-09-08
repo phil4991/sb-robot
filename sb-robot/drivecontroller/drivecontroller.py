@@ -90,15 +90,15 @@ class RobotController:
 
 class BTObserver(Observer):
 	def __init__(self):
-		super().__init__(self)
+		super().__init__()
 
 		self._BT_Interaction = None
 
-	def movedDot():
+	def movedDot(self):
 		print('moved')
-	def releasedDot():
+	def releasedDot(self):
 		print('\n','released')
-	def pressedDot():
+	def pressedDot(self):
 		print('pressed\n')
 
 	def getCommand(self):
@@ -119,9 +119,4 @@ if __name__ == '__main__':
 	MyRobot = RobotController()
 	print(MyRobot)
 
-	movedDot = Event('movedDotEvent')
-	pressedDot = Event('pressedDotEvent')
-	releasedDot = Event('releasedDotEvent')
 
-	bt_observer = BTObserver()
-	bt_observer.register(movedDot, bt_observer.movedDot)
