@@ -8,6 +8,7 @@
 
 class Observer():
 	_observers = []
+	_registered_names = []
 	def __init__(self):
 		self._observers.append(self)
 		
@@ -15,38 +16,33 @@ class Observer():
 		self._database = {}
 
 	def register(self, eventObj, callback):
-		if iscallable(callback):
+		if callable(callback) and eventObj.name not in Observer._registered_names:
+			Observer._registered_names.append(eventObj.name)
+			self
 			self._database[eventObj.name] = callback
 		else:
-			ValueError('Error! registered event is not callable')
+			ValueError('Error! registered callback is not callable or name is already used')
 
 	def unregister(self, eventObj):
-		if eventObj in self._events:
-			i = self._events.index(eventObj)
-
-			del self._events[i]
-			del self._callbacks[i]
+		if eventObj.name in self._database.keys():
+			del self._database[eventObj.name]
 		else:
 			print('Warning! event not found. ')
 
 
 class Event():
-	_nEvents = 0
 	def __init__(self, name):
-		self._nEvents += 1
 		self.name = name
 
 	def fire(self, arg = None):
-		for i, observer in enumerate(Observer._observers):
-			if self._nEvents == -1:
-				assert 0, "no handler found"
-			elif self._nEvents == i:
-				if arg != None:
-					print('called w\ arg ', observer._callbacks[i])
-					observer._callbacks[i](arg)
+		for observer in Observer._observers:
+			if self.name in observer._database: 
+				if arg is None:
+					observer._database[self.name]()
 				else:
-					print('called w\o arg ', observer._callbacks[i])
-					observer._callbacks[i]()
+					observer._database[self.name](arg)
+
+			
 
 
 
@@ -75,7 +71,7 @@ if __name__ == '__main__':
 
 	room.register(e1,  room.someone_arrived)
 	room.register(e2,  room.someone_left)
-	print('events registered ', room._events)
+	print('events registered ', *room._database.items())
 	
 	
 
