@@ -94,11 +94,11 @@ class BTObserver(Observer):
 
 		self._BT_Interaction = None
 
-	def movedDot(self):
+	def movedDot(self, arg):
 		print('moved')
-	def releasedDot(self):
+	def releasedDot(self, arg):
 		print('\n','released')
-	def pressedDot(self):
+	def pressedDot(self, arg):
 		print('pressed\n')
 
 	def getCommand(self):

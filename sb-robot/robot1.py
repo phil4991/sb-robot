@@ -38,11 +38,10 @@ bt_observer.register(movedDot, bt_observer.movedDot)
 bt_observer.register(pressedDot, bt_observer.pressedDot)
 bt_observer.register(releasedDot, bt_observer.releasedDot)
 
-bluedot.when_moved = movedDot.fire()
-bluedot.when_pressed = pressedDot.fire()
-bluedot.when_released = releasedDot.fire()
+bluedot.when_moved = movedDot.fire
+bluedot.when_pressed = pressedDot.fire
+bluedot.when_released = releasedDot.fire
 
-bluedot.wait_for_press()
 
-while True:
+while bluedot.wait_for_connection():
 	x = 1
