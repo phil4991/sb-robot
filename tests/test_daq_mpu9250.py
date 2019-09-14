@@ -25,7 +25,7 @@ t_shutdown = 0
  
 if (not imu.IMUInit()):  
 	hack = time.time()  
- 	imu_sentence = "$IIXDR,IMU_FAILED_TO_INITIALIZE*7C"  
+	imu_sentence = "$IIXDR,IMU_FAILED_TO_INITIALIZE*7C"  
 	if (hack - t_print) > 1.0:  
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
 		sock.sendto(imu_sentence, (IMU_IP, IMU_PORT))  
@@ -70,7 +70,7 @@ iixdr = iixdr0
 freq = 1  
  
 while True:  
-hack = time.time()  
+	hack = time.time()  
  
 # if it's been longer than 5 seconds since last print  
 if (hack - t_damp) > 5.0:  
@@ -129,8 +129,8 @@ if (hack - t_damp) > .1:
 	if heading < 0.1:  
 		heading = heading + 360.0  
  
-	 t_damp = hack  
-	 t_one += 1  
+	t_damp = hack  
+	t_one += 1  
 	if t_one == 10:  
 		t_one = 0  
 	t_three += 1  
