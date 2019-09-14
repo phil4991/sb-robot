@@ -8,7 +8,6 @@ import math
 import operator  
 import socket  
 from functools import reduce
-import matplotlib as plt
  
 IMU_IP = "127.0.0.2"  
 IMU_PORT = 5005  
@@ -104,7 +103,8 @@ try:
 			fusionPose = data["fusionPose"]  
 			Gyro = data["gyro"]  
 			t_fail_timer = 0.0
-			fid.write('{0} {1} {2} {3}'.format(t_print, *Gyro))
+			print(*Gyro)
+			fid.write('{0} {1} {2} {3} \n'.format(t_print, *Gyro))
 
 			if (hack - t_damp) > .1:  
 				roll = round(math.degrees(fusionPose[0]), 1)  
