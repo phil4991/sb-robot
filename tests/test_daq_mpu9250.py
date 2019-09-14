@@ -8,6 +8,7 @@ import math
 import operator  
 import socket  
 from functools import reduce
+import matplotlib as plt
  
 IMU_IP = "127.0.0.2"  
 IMU_PORT = 5005  
@@ -52,7 +53,8 @@ pitchrate = 0.0
 yawrate = 0.0  
 magnetic_deviation = -13.7  
  
- 
+acc_plot = [] 
+t_plot = []
 # dampening variables  
 t_one = 0  
 t_three = 0  
@@ -69,10 +71,11 @@ iixdr0 = "$IIXDR,A,,D,ROLL,A,,D,PTCH,A,,D,RLLR,A,,D,PTCR,A,,D,YAWR*51"
 iihdt = iihdt0  
 iixdr = iixdr0  
 freq = 1  
- 
+
+fid = open('IMU_data.txt', 'w') 
 while True:  
 	hack = time.time()  
- 
+	 
 	# if it's been longer than 5 seconds since last print  
 	if (hack - t_damp) > 5.0:  
 		if (hack - t_fail) > 1.0:  
@@ -91,7 +94,7 @@ while True:
 				cs = "0" + cs  
 			imu_sentence = "$" + imu_sentence + "*" + cs  
 			sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
-			sock.sendto(imu_sentence, (IMU_IP, IMU_PORT))  
+			sock.sendto(imu_sentence.encode(), (IMU_IP, IMU_PORT))  
 			t_fail = hack  
 			t_shutdown += 1  
 	 
@@ -100,8 +103,8 @@ while True:
 		fusionPose = data["fusionPose"]  
 		Gyro = data["gyro"]  
 		t_fail_timer = 0.0
+		fid.write('{0} {1} {2} {3}'.format(t_print, *Gyro))
 
-		
 		if (hack - t_damp) > .1:  
 			roll = round(math.degrees(fusionPose[0]), 1)  
 			pitch = round(math.degrees(fusionPose[1]), 1)  
@@ -159,3 +162,5 @@ while True:
 	 
 			t_print = hack  
 		time.sleep(poll_interval*1.0/1000.0) 
+
+fid.close()
