@@ -1,43 +1,50 @@
 {
-  "core": {
-    "name": "core"
-  },
-  "motorGLOBAL": {
-    "f_PWM": 200
-  },
-  "bt": {
-    "devs": [
-      "OnePlus 6"
-    ],
-    "MAC": [
-      "64:A2:F9:2F:6A:9B"
+    "core": {
+        "name": "core"
+    },
+    "bt": {
+        "devs": [
+            "OnePlus 6"
+        ],
+        "MAC": [
+            "64:A2:F9:2F:6A:9B"
+        ]
+    },
+    "motorGLOBAL": {
+        "f_PWM": 200
+    },
+    "gpio": [
+        {
+            "name": "leftMotor",
+            "type": "OUT",
+            "pins": [
+                12,
+                20,
+                16
+            ]
+        },
+        {
+            "name": "rightMotor",
+            "type": "OUT",
+            "pins": [
+                13,
+                26,
+                19
+            ]
+        },
+        {
+            "name": "StatusLED_BT",
+            "type": "OUT",
+            "pins": [
+                14
+            ]
+        },
+        {
+            "pins": [
+                15
+            ],
+            "name": "BTN_CHANGE_MODE",
+            "type": "IN"
+        }
     ]
-  },
-  "gpio": [
-    {
-      "pins": [
-        12,
-        20,
-        16
-      ],
-      "name": "leftMotor",
-      "type": "OUT"
-    },
-    {
-      "pins": [
-        13,
-        26,
-        19
-      ],
-      "name": "rightMotor",
-      "type": "OUT"
-    },
-    {
-      "pins": [
-        14
-      ],
-      "name": "StatusLED_BT",
-      "type": "OUT"
-    }
-  ]
 }
