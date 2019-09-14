@@ -1,7 +1,6 @@
 # standards
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
-import abc
 
 # modules
 from core.events 	import Event, Observer # module not found! in init übernehmen?
@@ -15,11 +14,6 @@ class DCMotor:
 	def __init__(self, name, PINS, PWM_Frequecy = 200 ):
 		if len(PINS) == 0:
 			raise ValueError('no pins passed')
-		try:
-			GPIO.setup(PINS, GPIO.OUT)
-		except Exception as e:
-			raise e
-			print('GPIO SETUP FAILED')
 
 		self._pins		= {     'ENABLE' : PINS[0],
 								'IN_1'   : PINS[1],
@@ -74,7 +68,7 @@ class RobotController:
 		for pins in config['gpio']:
 			if pins['type'] is 'IN':
 				GPIO.setup(pins['pins'], GPIO.IN)
-			elif pins['type']	is 'OUT':
+			elif pins['type'] is 'OUT':
 				GPIO.setup(pins['pins'], GPIO.OUT)
 			else:
 				print('Warning! unrecognized pintype')	

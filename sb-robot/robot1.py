@@ -9,6 +9,7 @@ if sys.platform != 'win32':
 from bluedot import BlueDot
 from core.helpers 						import Configuration
 from core.events						import Event
+from core.state							import StateMachine
 
 from drivecontroller.drivecontroller 	import (RobotController, BTObserver)
 
@@ -24,9 +25,10 @@ config = Configuration.importConfig(CONFIG_PATH)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # 
 
-controller 	= RobotController()
-bluedot 	= BlueDot()
-bt_observer = BTObserver()
+controller 	 = RobotController()
+bluedot 	 = BlueDot()
+bt_observer  = BTObserver()
+statemachine = StateMachine()
 
 controller.configure(config)
 
@@ -43,5 +45,6 @@ bluedot.when_pressed = pressedDot.fire
 bluedot.when_released = releasedDot.fire
 
 
-while bluedot.wait_for_connection():
+
+while True:
 	x = 1
