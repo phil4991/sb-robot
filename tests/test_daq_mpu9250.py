@@ -71,7 +71,7 @@ iihdt = iihdt0
 iixdr = iixdr0  
 freq = 1  
 
-fid = open('IMU_data.txt', 'w') 
+fid = open('../data/IMU_data.txt', 'w') 
 try:
 	while True:  
 		hack = time.time()  
