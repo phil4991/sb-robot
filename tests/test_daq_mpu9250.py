@@ -102,9 +102,11 @@ try:
 			data = imu.getIMUData()  
 			fusionPose = data["fusionPose"]  
 			Gyro = data["gyro"]  
+			accel = data["accel"]
 			t_fail_timer = 0.0
-			print(*Gyro)
-			fid.write('{0} {1} {2} {3} \n'.format(t_print, *Gyro))
+
+			print(*accel)
+			fid.write('{0} {1} {2} {3} \n'.format(t_print, *accel))
 
 			if (hack - t_damp) > .1:  
 				roll = round(math.degrees(fusionPose[0]), 1)  
