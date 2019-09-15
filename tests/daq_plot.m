@@ -1,7 +1,7 @@
 clear all; clc
 %% import
 in = dlmread('../data/IMU_data.txt')
-channel = 4
+channel = [2,3,4]
 
 %% calc
 T = in(end,1)-in(1,1)
@@ -13,6 +13,7 @@ f = fft(in(:, channel))/length(in(:, channel));
 subplot(2, 1, 1)
 plot(in(:, channel))
 title('Acceleration of IMU')
+legend('a_x','a_y','a_z')
 xlabel('number of samples')
 grid on
 
