@@ -1,8 +1,7 @@
 # Specify filepatterns you want git to ignore.
 # +++++++++++++++++++++++++++++++
 # specfic files
-bt-module.py
-command_test.py
+tests/RTIMULib.ini
 # +++++++++++++++++++++++++++++++
 # file types
 *.pyc
