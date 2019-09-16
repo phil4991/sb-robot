@@ -1,9 +1,13 @@
 # Specify filepatterns you want git to ignore.
-
+# +++++++++++++++++++++++++++++++
+# specfic files
 bt-module.py
 command_test.py
-
+# +++++++++++++++++++++++++++++++
+# file types
 *.pyc
 *.pyo
-
+# +++++++++++++++++++++++++++++++
+#  specific folders
 docs/
+tests/RTEllipsoidFit/
