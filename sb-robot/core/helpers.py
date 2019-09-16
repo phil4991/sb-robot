@@ -51,7 +51,7 @@ class IO():
 	def wait_for_command(self, transition_method):
 		GPIO.wait_for_edge(config['gpio'][self._button_id], 
 			GPIO.FALLING, 
-			bouncetime=300)
+			bouncetime=self._click_speed)
 
 		transition_method()
 		return 0
@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
 	CONFIG_FILE = 'config.json'
 	config_in = {
-		"core"	: {	"click_speed": 0.3},
+		"core"	: {	"click_speed": 300},
 		"bt" 	: {	"devs":["OnePlus 6"],
 					"MAC": ["64:A2:F9:2F:6A:9B"]},
 		"motorGLOBAL":{	"f_PWM": 200,},

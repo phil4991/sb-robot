@@ -29,8 +29,10 @@ controller 	 = RobotController()
 bluedot 	 = BlueDot()
 bt_observer  = BTObserver()
 statemachine = StateMachine()
+io_module	 = IO()
 
 controller.configure(config)
+io_module.configure(config)
 
 movedDot = Event('movedDotEvent')
 pressedDot = Event('pressedDotEvent')
@@ -44,7 +46,6 @@ bluedot.when_moved = movedDot.fire
 bluedot.when_pressed = pressedDot.fire
 bluedot.when_released = releasedDot.fire
 
+io_module.wait_for_command(statemachine.enable_control)
 
-
-while True:
-	x = 1
+print('program exit in state {}'.format(statemachine.state))
