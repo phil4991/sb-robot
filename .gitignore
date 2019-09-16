@@ -10,3 +10,4 @@ tests/RTIMULib.ini
 #  specific folders
 docs/
 tests/RTEllipsoidFit/
+tests/fig/

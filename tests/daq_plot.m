@@ -20,3 +20,4 @@ grid on
 subplot(2, 1, 2)
 plot(freqs,f)
 title('Frequency spectrum of acceleration')
+saveas(gcf, 'fig/imu_accel_data.svg')
