@@ -78,7 +78,7 @@ if __name__ == '__main__':
 						"type": [GPIO.OUT, GPIO.PUD_UP],
 						"pins": [14]},
 				    {	"name": "BTN_CHANGE_MODE",
-      					"type": [GPIO.IN],
+      					"type": [GPIO.IN, GPIO.PUD_DOWN],
       					"pins": [15]}]}
 
 

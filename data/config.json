@@ -1,6 +1,9 @@
 {
     "core": {
-        "name": "core"
+        "click_speed": 300
+    },
+    "motorGLOBAL": {
+        "f_PWM": 200
     },
     "bt": {
         "devs": [
@@ -10,13 +13,13 @@
             "64:A2:F9:2F:6A:9B"
         ]
     },
-    "motorGLOBAL": {
-        "f_PWM": 200
-    },
     "gpio": [
         {
             "name": "leftMotor",
-            "type": "OUT",
+            "type": [
+                0,
+                22
+            ],
             "pins": [
                 12,
                 20,
@@ -25,7 +28,10 @@
         },
         {
             "name": "rightMotor",
-            "type": "OUT",
+            "type": [
+                0,
+                22
+            ],
             "pins": [
                 13,
                 26,
@@ -33,18 +39,24 @@
             ]
         },
         {
-            "name": "StatusLED_BT",
-            "type": "OUT",
+            "name": "LED_STATUS_BT",
+            "type": [
+                0,
+                22
+            ],
             "pins": [
                 14
             ]
         },
         {
+            "name": "BTN_CHANGE_MODE",
+            "type": [
+                1,
+                21
+            ],
             "pins": [
                 15
-            ],
-            "name": "BTN_CHANGE_MODE",
-            "type": "IN"
+            ]
         }
     ]
 }
