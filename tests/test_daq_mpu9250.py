@@ -71,7 +71,16 @@ iihdt = iihdt0
 iixdr = iixdr0  
 freq = 1  
 
-fid = open('../data/IMU_data.txt', 'w') 
+def acc_angle_from_xz(accel_data):
+	acc_x, acc_y, acc_z = *accel_data
+	alpha = math.atan2(acc_x, acc_z)
+
+	return alpha
+
+
+fid = open('../data/IMU_data.txt', 'w')
+fid.write('{0} {1} {2} {3} {4}\n'.format('time_[s]', 'a_x', 'a_y', 'a_z', 'alpha'))
+
 try:
 	while True:  
 		hack = time.time()  
@@ -105,8 +114,10 @@ try:
 			accel = data["accel"]
 			t_fail_timer = 0.0
 
+			alpha = acc_angle_from_xz(accel)
+
 			print(*accel)
-			fid.write('{0} {1} {2} {3} \n'.format(t_print, *accel))
+			fid.write('{0} {1} {2} {3} {4}\n'.format(hack, *accel, alpha))
 
 			if (hack - t_damp) > .1:  
 				roll = round(math.degrees(fusionPose[0]), 1)  
