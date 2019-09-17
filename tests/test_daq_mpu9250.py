@@ -72,7 +72,10 @@ iixdr = iixdr0
 freq = 1  
 
 def acc_angle_from_xz(accel_data):
-	acc_x, acc_y, acc_z = *accel_data
+	acc_x = accel_data[0]
+	acc_y = accel_data[1]
+	acc_z = accel_data[2]
+
 	alpha = math.atan2(acc_x, acc_z)
 
 	return alpha
