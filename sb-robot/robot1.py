@@ -7,7 +7,7 @@ if sys.platform != 'win32':
 	assert os.getuid() == 0, "root privilage is needed. run as sudo"
 
 from bluedot import BlueDot
-from core.helpers 						import Configuration
+from core.helpers 						import Configuration, IO
 from core.events						import Event
 from core.state							import StateMachine
 
@@ -45,6 +45,8 @@ bt_observer.register(releasedDot, bt_observer.releasedDot)
 bluedot.when_moved = movedDot.fire
 bluedot.when_pressed = pressedDot.fire
 bluedot.when_released = releasedDot.fire
+
+statemachine.init()
 
 io_module.wait_for_command(statemachine.enable_control)
 

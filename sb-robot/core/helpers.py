@@ -27,13 +27,13 @@ class IO():
 	def configure(self, config):
 		print('setting gpio pins')
 		for pin in config['gpio']:
-			if len(pin['type']) > 1:
-				GPIO.setup(pin['pins'], pin['type'])
-			else:
-				GPIO.setup(pin['pins'], pin['types'][0], pin['types'][1])
+			if pin['type'][0] == GPIO.OUT:
+				GPIO.setup(pin['pins'], pin['type'][0])
+			elif pin['type'][0] == GPIO.IN:
+				GPIO.setup(pin['pins'], pin['type'][0], pin['type'][1])
 
 			if pin['name'] == 'BTN_CHANGE_MODE':
-				self._button_id = config['gpio'].index(pin)
+				self._button_id = pin['pins'][0]
 
 			self._pins.append(pin['pins'])
 
@@ -49,8 +49,8 @@ class IO():
 		print('button pressed')
 
 	def wait_for_command(self, transition_method):
-		GPIO.wait_for_edge(config['gpio'][self._button_id], 
-			GPIO.FALLING, 
+		GPIO.wait_for_edge(self._button_id, 
+			GPIO.RISING, 
 			bouncetime=self._click_speed)
 
 		transition_method()
@@ -69,13 +69,13 @@ if __name__ == '__main__':
 					"MAC": ["64:A2:F9:2F:6A:9B"]},
 		"motorGLOBAL":{	"f_PWM": 200,},
 		"gpio"	: [{ 	"name": "leftMotor",
-						"type": [GPIO.OUT, GPIO.PUD_UP],
+						"type": [GPIO.OUT],
 						"pins": [12, 20, 16]}, 
 					{ 	"name": "rightMotor",
-						"type": [GPIO.OUT, GPIO.PUD_UP],
+						"type": [GPIO.OUT],
 						"pins": [13, 26, 19]},
 					{ 	"name": "LED_STATUS_BT",
-						"type": [GPIO.OUT, GPIO.PUD_UP],
+						"type": [GPIO.OUT],
 						"pins": [14]},
 				    {	"name": "BTN_CHANGE_MODE",
       					"type": [GPIO.IN, GPIO.PUD_DOWN],

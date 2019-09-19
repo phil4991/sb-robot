@@ -1,9 +1,52 @@
 {
-    "core": {
-        "click_speed": 300
-    },
+    "gpio": [
+        {
+            "name": "leftMotor",
+            "pins": [
+                12,
+                20,
+                16
+            ],
+            "type": [
+                0
+            ]
+        },
+        {
+            "name": "rightMotor",
+            "pins": [
+                13,
+                26,
+                19
+            ],
+            "type": [
+                0
+            ]
+        },
+        {
+            "name": "LED_STATUS_BT",
+            "pins": [
+                14
+            ],
+            "type": [
+                0
+            ]
+        },
+        {
+            "name": "BTN_CHANGE_MODE",
+            "pins": [
+                15
+            ],
+            "type": [
+                1,
+                21
+            ]
+        }
+    ],
     "motorGLOBAL": {
         "f_PWM": 200
+    },
+    "core": {
+        "click_speed": 300
     },
     "bt": {
         "devs": [
@@ -12,51 +55,5 @@
         "MAC": [
             "64:A2:F9:2F:6A:9B"
         ]
-    },
-    "gpio": [
-        {
-            "name": "leftMotor",
-            "type": [
-                0,
-                22
-            ],
-            "pins": [
-                12,
-                20,
-                16
-            ]
-        },
-        {
-            "name": "rightMotor",
-            "type": [
-                0,
-                22
-            ],
-            "pins": [
-                13,
-                26,
-                19
-            ]
-        },
-        {
-            "name": "LED_STATUS_BT",
-            "type": [
-                0,
-                22
-            ],
-            "pins": [
-                14
-            ]
-        },
-        {
-            "name": "BTN_CHANGE_MODE",
-            "type": [
-                1,
-                21
-            ],
-            "pins": [
-                15
-            ]
-        }
-    ]
+    }
 }
