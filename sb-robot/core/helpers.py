@@ -79,7 +79,12 @@ if __name__ == '__main__':
 						"pins": [14]},
 				    {	"name": "BTN_CHANGE_MODE",
       					"type": [GPIO.IN],
-      					"pins": [15]}]}
+      					"pins": [15]}],
+		"IMU"	: { "IP": "127.0.0.2",
+					"PORT": 5005,
+					"slerpPower": 0.02
+					}
+				}
 
 
 	Configuration.exportConfig(config_in, os.path.join(DATA_DIRECTORY, CONFIG_FILE))
