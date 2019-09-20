@@ -1,10 +1,11 @@
 # standards
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
+import abc
 
 # modules
 from core.events 	import Event, Observer # module not found! in init übernehmen?
-from core.state 	import State
+# from core.state 	import State
 from bluedot 		import BlueDot
 
 LEFT = 0
@@ -66,12 +67,11 @@ class RobotController:
 		print('initializing hardware...')
 
 		for pins in config['gpio']:
-			if pins['type'] is 'IN':
-				GPIO.setup(pins['pins'], GPIO.IN)
-			elif pins['type'] is 'OUT':
-				GPIO.setup(pins['pins'], GPIO.OUT)
-			else:
-				print('Warning! unrecognized pintype')	
+			if pins['type'][0] == GPIO.IN:
+				GPIO.setup(pins['pins'], pins['type'][0], pins['type'][1])
+			elif pins['type'][0] == GPIO.OUT:
+				GPIO.setup(pins['pins'], pins['type'][0])
+
 
 		self._motors[LEFT] = DCMotor(LEFT, config['gpio'][LEFT]['pins'])
 		self._motors[RIGHT] = DCMotor(RIGHT, config['gpio'][RIGHT]['pins'])
