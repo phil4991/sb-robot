@@ -1,6 +1,6 @@
 clear all; clc
 %% import
-in = dlmread('../data/IMU_data.txt', ' ', 2);
+in = dlmread('../data/IMU_data_rotation_test.txt', ' ', 2);
 channel = [2,3,4]
 t = in(:, 1);
 
@@ -15,7 +15,7 @@ subplot(3, 1, 1)
 plot(t, in(:, channel))
 title('Acceleration of IMU')
 legend('a_x','a_y','a_z')
-xlabel('number of samples')
+xlabel('time in s')
 grid on
 
 subplot(3, 1, 2)
