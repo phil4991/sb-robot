@@ -1,6 +1,12 @@
 import json, os
 import RPi.GPIO as GPIO
 
+# ++++++++++++++++++++++++++++
+# constants
+LEFT = 0
+RIGHT = 1
+
+# classes
 class Configuration:
 	def importConfig(path):
 		with open(path, 'r') as f:
@@ -78,11 +84,12 @@ if __name__ == '__main__':
 						"type": [GPIO.OUT],
 						"pins": [14]},
 				    {	"name": "BTN_CHANGE_MODE",
-      					"type": [GPIO.IN],
+      					"type": [GPIO.IN, GPIO.PUD_DOWN],
       					"pins": [15]}],
-		"IMU"	: { "IP": "127.0.0.2",
-					"PORT": 5005,
-					"slerpPower": 0.02
+		"IMU"	: { "settings_file" : "RTIMULib.ini"
+					"IP"			: "127.0.0.2",
+					"PORT"			: 5005,
+					"slerpPower"	: 0.02
 					}
 				}
 

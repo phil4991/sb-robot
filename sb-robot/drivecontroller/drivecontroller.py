@@ -5,11 +5,8 @@ import abc
 
 # modules
 from core.events 	import Event, Observer # module not found! in init übernehmen?
-# from core.state 	import State
+from core.helpers	import LEFT, RIGHT
 from bluedot 		import BlueDot
-
-LEFT = 0
-RIGHT = 1
 
 class DCMotor:
 	def __init__(self, name, PINS, PWM_Frequecy = 200 ):

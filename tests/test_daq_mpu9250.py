@@ -12,7 +12,7 @@ from functools import reduce
 IMU_IP = "127.0.0.2"  
 IMU_PORT = 5005  
  
-SETTINGS_FILE = "RTIMULib"  
+SETTINGS_FILE = "../data/RTIMULib"  
  
 s = RTIMU.Settings(SETTINGS_FILE)  
 imu = RTIMU.RTIMU(s)  
@@ -177,7 +177,8 @@ try:
 				sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  
 				sock.sendto(imu_sentence.encode(), (IMU_IP, IMU_PORT))  
 		 
-				t_print = hack  
+				t_print = hack 
+				 
 			time.sleep(poll_interval*1.0/1000.0) 
 except KeyboardInterrupt as e:
 	fid.close()

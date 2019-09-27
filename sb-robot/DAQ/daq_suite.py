@@ -1,24 +1,53 @@
 # daq module for all sensor specific classes 2019-09-16
 # 
 
-import abc
+import abc, sys
+from time import time, sleep
 from RTIMU import Settings, RTIMU
 
 class BasicSensor(abc.ABC):
 	def __init__(self):
-		self.pollIntervall = None
+		self.pollIntervall = 0
+		self.interrupt_flag = 0
 
 	@abc.abstractmethod
 	def configure(self):
+		pass
+
+	@abc.abstractmethod
+	def read(self):
 		pass
 		
 class DAQController():
 	def __init__(self):
 		self._sensors = {
 		}
+		self.current_pollIntervall = 0
+		self._loop_running = False
+
 
 	def configure(self, config):
-		pass
+		self._sensors['IMU'] = IMU(config['IMU']['settings_file'])
+
+		print('setting maximum polling time..')
+		maximum = 0		# huge value to start
+		for name, sensor in self._sensors.items():
+			if sensor.pollIntervall < maximum:
+				maximum = sensor.pollIntervall
+		if maximum != 0:
+			self.current_pollIntervall = maximum
+
+		return 0
+
+
+	def getData(self):
+		self._loop_running = True
+		timer = time()
+		while self._loop_running:
+			print(time)
+			sleep(self.current_pollIntervall/1000.0)
+
+
 
 class IMU(BasicSensor):
 	def __init__(self, settingsFile):
@@ -42,8 +71,18 @@ class IMU(BasicSensor):
 		self.IMU.setAccelEnable(True)  
 		self.IMU.setCompassEnable(False) 
 
+		try:
+			print('initilizing IMU...')
+			self.IMU.IMUInit()
+		except Exception as e:
+			raise e
+			sys.exit(1)
+
 		self.pollIntervall = self.IMU.IMUGetPollInterval()
-		print('set pollintervall to ', self.pollintervall)
+		print('set IMU pollintervall to ', self.pollintervall)
 
 class WheelEncoder(BasicSensor):
+	pass
+
+class UltrasonicSensor(BasicSensor):
 	pass
