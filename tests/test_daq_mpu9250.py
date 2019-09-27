@@ -13,7 +13,7 @@ IMU_IP = "127.0.0.2"
 IMU_PORT = 5005  
  
 SETTINGS_FILE = "RTIMULib"  
- 
+fextension = 'rotation_test'
 s = RTIMU.Settings(SETTINGS_FILE)  
 imu = RTIMU.RTIMU(s)  
  
@@ -81,9 +81,9 @@ def acc_angle_from_xz(accel_data):
 	return alpha
 
 
-fid = open('../data/IMU_data.txt', 'w')
+fid = open('../data/IMU_data_{0}.txt'.format(fextension), 'w')
 fid.write('{0} {1} {2} {3} {4}\n'.format('time_[s]', 'a_x', 'a_y', 'a_z', 'alpha'))
-
+t_start = time.time()
 try:
 	while True:  
 		hack = time.time()  
@@ -120,7 +120,7 @@ try:
 			alpha = acc_angle_from_xz(accel)
 
 			print(*accel)
-			fid.write('{0} {1} {2} {3} {4}\n'.format(hack, *accel, alpha))
+			fid.write('{0} {1} {2} {3} {4}\n'.format(round(hack-t_start,3), *accel, alpha))
 
 			if (hack - t_damp) > .1:  
 				roll = round(math.degrees(fusionPose[0]), 1)  
