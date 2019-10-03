@@ -7,12 +7,12 @@ once it's finished.
 ## Status overview
 2019-08 implementing `drivecontroller/` module..
 
-2019-07 tested the controller code on the RPi
+2019-07 tested the first controller code with the new hardware on the RPi
 
 2019-02 first code for the controller implemented in robot.py
 
 ## Project directory
-The projects is structured in modules which will be impleneted in diffrent steps.
+The project is structured in packages which will be impleneted in different steps.
 ```
 sb-robot/
 │
