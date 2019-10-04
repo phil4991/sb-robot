@@ -60,7 +60,11 @@ class IO():
 			bouncetime=self._click_speed)
 
 		transition_method()
-		return 0
+		return True
+
+	def print_pipeline(self, pipeline):
+		print(pipeline['time'])
+		print(pipeline['IMU'])
 
 
 

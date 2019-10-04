@@ -12,6 +12,7 @@ from core.events						import Event
 from core.state							import StateMachine
 
 from drivecontroller.drivecontroller 	import (RobotController, BTObserver)
+from DAQ.daq_suite						import DAQController
 
 APP_DIRECTORY 	= 'sb-robot'
 DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
@@ -30,9 +31,11 @@ bluedot 	 = BlueDot()
 bt_observer  = BTObserver()
 statemachine = StateMachine()
 io_module	 = IO()
+daq_controller = DAQController()
 
 controller.configure(config)
 io_module.configure(config)
+daq_controller.configure(config)
 
 movedDot = Event('movedDotEvent')
 pressedDot = Event('pressedDotEvent')
@@ -48,6 +51,11 @@ bluedot.when_released = releasedDot.fire
 
 statemachine.init()
 
-io_module.wait_for_command(statemachine.enable_control)
+if io_module.wait_for_command(statemachine.enable_control):
+	print('starting daq...')
+	daq_controller.start()
+
+	daq_controller.exit()
+	io_module.print_pipeline(daq_controller.pipeline._buffer[:5])
 
 print('program exit in state {}'.format(statemachine.state))
