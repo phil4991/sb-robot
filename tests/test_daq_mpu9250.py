@@ -12,7 +12,7 @@ from functools import reduce
 IMU_IP = "127.0.0.2"  
 IMU_PORT = 5005  
  
-SETTINGS_FILE = "RTIMULib"  
+SETTINGS_FILE = "../data/RTIMULib"  
 fextension = 'rotation_test'
 s = RTIMU.Settings(SETTINGS_FILE)  
 imu = RTIMU.RTIMU(s)  

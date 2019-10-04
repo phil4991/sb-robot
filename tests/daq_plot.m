@@ -1,6 +1,6 @@
 clear all; clc
 %% import
-in = dlmread('../data/IMU_data_rotation_test.txt', ' ', 2);
+in = dlmread('../data/IMU_data_shock.txt', ' ', 2);
 channel = [2,3,4]
 t = in(:, 1);
 
@@ -20,6 +20,7 @@ grid on
 
 subplot(3, 1, 2)
 plot(freqs,f)
+xlim([0 1])
 title('Frequency spectrum of acceleration')
 
 subplot(3, 1, 3)
