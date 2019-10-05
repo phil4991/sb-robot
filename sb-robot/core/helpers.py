@@ -63,13 +63,13 @@ class IO():
 		return True
 
 	def print_pipeline(self, pipeline):
-		print(pipeline['time'])
-		print(pipeline['IMU'])
+		print(pipeline[:5])
+		print(pipeline[:5])
 
 
 
 if __name__ == '__main__':
-	APP_DIRECTORY 	= 'sb-robot/sb-robot'
+	APP_DIRECTORY 	= 'sb-robot'
 	DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
 
 	CONFIG_FILE = 'config.json'
@@ -90,7 +90,7 @@ if __name__ == '__main__':
 				    {	"name": "BTN_CHANGE_MODE",
       					"type": [GPIO.IN, GPIO.PUD_DOWN],
       					"pins": [15]}],
-		"IMU"	: { "settings_file" : "RTIMULib.ini"
+		"IMU"	: { "settings_file" : "RTIMULib",
 					"IP"			: "127.0.0.2",
 					"PORT"			: 5005,
 					"slerpPower"	: 0.02

@@ -55,7 +55,7 @@ if io_module.wait_for_command(statemachine.enable_control):
 	print('starting daq...')
 	daq_controller.start()
 
-	daq_controller.exit()
+	daq_controller.stop()
 	io_module.print_pipeline(daq_controller.pipeline._buffer[:5])
 
 print('program exit in state {}'.format(statemachine.state))

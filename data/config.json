@@ -1,52 +1,12 @@
 {
-    "gpio": [
-        {
-            "name": "leftMotor",
-            "pins": [
-                12,
-                20,
-                16
-            ],
-            "type": [
-                0
-            ]
-        },
-        {
-            "name": "rightMotor",
-            "pins": [
-                13,
-                26,
-                19
-            ],
-            "type": [
-                0
-            ]
-        },
-        {
-            "name": "LED_STATUS_BT",
-            "pins": [
-                14
-            ],
-            "type": [
-                0
-            ]
-        },
-        {
-            "name": "BTN_CHANGE_MODE",
-            "pins": [
-                15
-            ],
-            "type": [
-                1,
-                21
-            ]
-        }
-    ],
+    "IMU": {
+        "settings_file": "RTIMULib",
+        "IP": "127.0.0.2",
+        "PORT": 5005,
+        "slerpPower": 0.02
+    },
     "motorGLOBAL": {
         "f_PWM": 200
-    },
-    "core": {
-        "click_speed": 300
     },
     "bt": {
         "devs": [
@@ -55,5 +15,51 @@
         "MAC": [
             "64:A2:F9:2F:6A:9B"
         ]
+    },
+    "gpio": [
+        {
+            "type": [
+                0
+            ],
+            "pins": [
+                12,
+                20,
+                16
+            ],
+            "name": "leftMotor"
+        },
+        {
+            "type": [
+                0
+            ],
+            "pins": [
+                13,
+                26,
+                19
+            ],
+            "name": "rightMotor"
+        },
+        {
+            "type": [
+                0
+            ],
+            "pins": [
+                14
+            ],
+            "name": "LED_STATUS_BT"
+        },
+        {
+            "type": [
+                1,
+                21
+            ],
+            "pins": [
+                15
+            ],
+            "name": "BTN_CHANGE_MODE"
+        }
+    ],
+    "core": {
+        "click_speed": 300
     }
 }

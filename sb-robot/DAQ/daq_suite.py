@@ -24,7 +24,7 @@ class BasicSensor(abc.ABC):
 		pass
 
 class DataPipeline:
-	def __init__():
+	def __init__(self):
 		self._buffer = list()
 
 		self._producer_lock = Lock()
@@ -36,7 +36,7 @@ class DataPipeline:
 		self._consumer_lock.release()
 
 	def get_item(self):
-		if len(if self._buffer) > 0:
+		if len(self._buffer) > 0:
 			self._consumer_lock.aquire()
 			
 			data = self._buffer[0]
@@ -50,8 +50,7 @@ class DataPipeline:
 		
 class DAQController():
 	def __init__(self):
-		self._sensors = {
-		}
+		self._sensors = dict()
 		self.current_pollIntervall = 0
 		self._loop_running = False
 
@@ -59,7 +58,7 @@ class DAQController():
 		self.pipeline = DataPipeline()
 
 	def configure(self, config):
-		self._sensors['IMU'] = IMU('IMU', config['IMU']['settings_file'])
+		self._sensors['IMU'] = IMU('IMU', '../data/' + config['IMU']['settings_file'])
 
 		print('setting maximum polling time..')
 		maximum = 0		# huge value to start
@@ -68,6 +67,7 @@ class DAQController():
 				maximum = sensor.pollIntervall
 		if maximum != 0:
 			self.current_pollIntervall = maximum
+		print('DAQ configuration done')
 
 	def start(self):
 		self._ThreadWorker.submit(self.write_to_pipeline)
@@ -100,7 +100,7 @@ class DAQController():
 			if self._sensors['IMU'].interrupt_flag:
 				data_buf['IMU'] = self._sensors['IMU'].read()
 
-			if self._check_buffer(data_buf)
+			if self._check_buffer(data_buf):
 				self.pipeline.add_item(data_buf)
 
 	def stop_writing(self):
