@@ -44,11 +44,6 @@ class IO():
 			self._pins.append(pin['pins'])
 
 		self._click_speed = config['core']['click_speed']
-
-		# print('setting io events..')
-		# GPIO.add_event_detect(pin[self._button_id]['pin'][0], 
-		# 						GPIO.FALLING, callback=IO._cb, 
-		# 						bouncetime=300)
 		return 0
 
 	def _cb(self):
@@ -63,7 +58,7 @@ class IO():
 		return True
 
 	def print_pipeline(self, pipeline):
-		for val in pipeline[1:]:
+		for val in pipeline:
 			print('time: ', val['time'], 'accel: ', val['IMU']['accel'])
 
 

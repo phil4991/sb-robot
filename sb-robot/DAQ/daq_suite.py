@@ -34,23 +34,24 @@ class DataPipeline:
 	def add_item(self, item):
 #		self._producer_lock.acquire()
 		self._buffer.append(item)
+		if len(self._buffer) > 10:
+			del self._buffer[0]
 #		self._producer_lock.release()
 #		self._consumer_lock.release()
 
 	def get_item(self):
-		if len(self._buffer) > 0:
-			self._consumer_lock.acquire()
-			
-			data = self._buffer[0]
-			del self._buffer[0]
-
+		self._consumer_lock.acquire()
+		if self._buffer:
+			data = self._buffer[-1]
 			self._producer_lock.release()
 			self._consumer_lock.release()
 			return data
 		else:
+			self._producer_lock.release()
+			self._consumer_lock.release()
 			return None
 
-		
+
 class DAQController():
 	def __init__(self):
 		self._sensors = dict()
@@ -90,6 +91,7 @@ class DAQController():
 		print('starting loop...')
 		print('sensors: ', self._sensors, dir(self._sensors['IMU']))
 		while self._loop_running:
+			print('looping')
 			t = round(time(), 3)
 			sleep((self.current_pollIntervall+15)/1000.0)
 			data_buf = dict.fromkeys(['time', *self._sensors.keys()])
