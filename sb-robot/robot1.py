@@ -52,10 +52,13 @@ bluedot.when_released = releasedDot.fire
 statemachine.init()
 
 if io_module.wait_for_command(statemachine.enable_control):
-	print('starting daq...')
+	print('MAIN: starting daq...')
 	daq_controller.start()
+	print('MAIN: executing...')
 
+print('MAIN: waiting for command..')
+if io_module.wait_for_command(statemachine.disable_control):
 	daq_controller.stop()
-	io_module.print_pipeline(daq_controller.pipeline._buffer[:5])
+	io_module.print_pipeline(daq_controller.pipeline._buffer)
 
-print('program exit in state {}'.format(statemachine.state))
+print('MAIN: program exit in state {}'.format(statemachine.state))

@@ -63,8 +63,8 @@ class IO():
 		return True
 
 	def print_pipeline(self, pipeline):
-		print(pipeline[:5])
-		print(pipeline[:5])
+		for val in pipeline[1:]:
+			print('time: ', val['time'], 'accel: ', val['IMU']['accel'])
 
 
 
