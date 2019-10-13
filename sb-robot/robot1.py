@@ -55,11 +55,13 @@ statemachine.init()
 if io_module.wait_for_command(statemachine.enable_control):
 	print('MAIN: starting daq...')
 	daq_controller.start()
+	motion.start(daq_controller.pipeline)
 	print('MAIN: executing...')
 
 print('MAIN: waiting for command..')
 if io_module.wait_for_command(statemachine.disable_control):
 	daq_controller.stop()
+	motion.stop()
 	io_module.print_pipeline(daq_controller.pipeline._buffer)
 
 print('MAIN: program exit in state {}'.format(statemachine.state))

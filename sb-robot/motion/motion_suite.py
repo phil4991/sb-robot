@@ -3,10 +3,12 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 import abc
 
+from concurrent.futures 	import ThreadPoolExecutor
+from time 					import time, sleep
+
 # modules
 from core.events 	import Event, Observer # module not found! in init übernehmen?
 from core.helpers	import LEFT, RIGHT
-from bluedot 		import BlueDot
 
 class DCMotor:
 	def __init__(self, name, PINS, PWM_Frequecy = 200 ):
@@ -50,9 +52,10 @@ class MotionController:
 	def __init__(self):
 		self._motors	= {	LEFT: None,
 							RIGHT: None}
-		self._mode = None
+		self._looping = True
 		self.command = None
 
+		self._ThreadWorker = ThreadPoolExecutor().__enter__()
 
 	def configure(self, config):
 		print('initializing hardware...')
@@ -66,7 +69,40 @@ class MotionController:
 		self._motors[LEFT] = DCMotor(LEFT, config['gpio'][LEFT]['pins'])
 		self._motors[RIGHT] = DCMotor(RIGHT, config['gpio'][RIGHT]['pins'])
 
-	def close(self):
+		self._motors[LEFT].throttle = 100
+		self._motors[RIGHT].throttle = 100
+
+	def _forward(self):
+		self._motors[LEFT].drive_cw()
+		self._motors[RIGHT].drive_ccw()
+
+	def _backward(self):
+		self._motors[LEFT].drive_ccw()
+		self._motors[RIGHT].drive_cw()
+
+	def _start_check_pipeline(self, pipeline):
+
+		while self._looping:
+			sleep(0.05)
+			accel = pipeline._buffer[-1]['IMU']
+
+			alpha = math.atan2(accel[0], accel[2])
+			print(round(alpha, 3))
+
+			if alpha >= 0:
+				self._forward()
+			elif alpha < 0:
+				self._backward()
+
+	
+	def _stop_checking(self):
+		self._looping = False
+
+	def start(self, pipeline):
+		self._ThreadWorker.submit(_start_check_pipeline, pipeline)
+
+	def stop(self):
+		self._ThreadWorker.__exit__(None, None, None)
 		GPIO.cleanup()
 
 
@@ -83,8 +119,8 @@ class BTObserver(Observer):
 	def pressedDot(self, arg):
 		print('pressed\n')
 
-	def getCommand(self):
-		return self.command.getCommand()
+	# def getCommand(self):
+	# 	return self.command.getCommand()
 
 class Command(abc.ABC):
 	def __init__(self):
@@ -92,7 +128,7 @@ class Command(abc.ABC):
 		self.direction = 0
 
 	@abc.abstractmethod
-	def _getThrottle(self, command):
+	def getThrottle(self, command):
 		pass
 
 
