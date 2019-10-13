@@ -7,10 +7,10 @@ from RTIMU 					import Settings, RTIMU
 from threading 				import Thread, Lock
 
 # package imports
-if __name__ != '__main__':
-	from ..events 	import ThreadPoolExecutorStackTraced
+if __name__ == '__main__':
+	from ..helpers 	import ThreadPoolExecutorStackTraced
 else:
-	from core.events 	import ThreadPoolExecutorStackTraced
+	from core.helpers 	import ThreadPoolExecutorStackTraced
 
 class BasicSensor(abc.ABC):
 	def __init__(self, name):

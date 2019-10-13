@@ -6,16 +6,16 @@ import abc
 from time 					import time, sleep
 
 # package imports
-if __name__ != '__main__':
+if __name__ == '__main__':
 	from ..events 	import (Event, 
-							Observer, 
-							ThreadPoolExecutorStackTraced) # module not found! in init übernehmen?
-	from ..helpers	import LEFT, RIGHT
+							Observer)
+	from ..helpers	import LEFT, RIGHT, ThreadPoolExecutorStackTraced
+
 else:
 	from core.events 	import (Event, 
-								Observer, 
-								ThreadPoolExecutorStackTraced) # module not found! in init übernehmen?
-	from core.helpers	import LEFT, RIGHT
+								Observer)
+	from core.helpers	import LEFT, RIGHT, ThreadPoolExecutorStackTraced
+
 
 class DCMotor:
 	def __init__(self, name, PINS, PWM_Frequecy = 200 ):
@@ -106,7 +106,7 @@ class MotionController:
 		self._looping = False
 
 	def start(self, pipeline):
-		self._ThreadWorker.submit(_start_check_pipeline, pipeline)
+		self._ThreadWorker.submit(self._start_check_pipeline, pipeline)
 
 	def stop(self):
 		self._stop_checking()

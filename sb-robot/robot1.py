@@ -34,7 +34,7 @@ io_module	 = IO()
 daq_controller = DAQController()
 motion_controller = MotionController()
 
-motion.configure(config)
+motion_controller.configure(config)
 io_module.configure(config)
 daq_controller.configure(config)
 
@@ -55,13 +55,13 @@ statemachine.init()
 if io_module.wait_for_command(statemachine.enable_control):
 	print('MAIN: starting daq...')
 	daq_controller.start()
-	motion.start(daq_controller.pipeline)
+	motion_controller.start(daq_controller.pipeline)
 	print('MAIN: executing...')
 
 print('MAIN: waiting for command..')
 if io_module.wait_for_command(statemachine.disable_control):
 	daq_controller.stop()
-	motion.stop()
+	motion_controller.stop()
 	io_module.print_pipeline(daq_controller.pipeline._buffer)
 
 print('MAIN: program exit in state {}'.format(statemachine.state))
