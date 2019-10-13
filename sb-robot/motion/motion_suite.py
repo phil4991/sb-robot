@@ -46,21 +46,15 @@ class DCMotor:
 		GPIO.output(self._pins['IN_2'], False)
 
 
-class RobotController:
+class MotionController:
 	def __init__(self):
 		self._motors	= {	LEFT: None,
 							RIGHT: None}
 		self._mode = None
 		self.command = None
 
-		self.DAQController 	= None
-
 
 	def configure(self, config):
-
-		if self.DAQController is not None:
-			self.DAQController.configure(config)
-
 		print('initializing hardware...')
 
 		for pins in config['gpio']:
@@ -69,14 +63,11 @@ class RobotController:
 			elif pins['type'][0] == GPIO.OUT:
 				GPIO.setup(pins['pins'], pins['type'][0])
 
-
 		self._motors[LEFT] = DCMotor(LEFT, config['gpio'][LEFT]['pins'])
 		self._motors[RIGHT] = DCMotor(RIGHT, config['gpio'][RIGHT]['pins'])
+
 	def close(self):
 		GPIO.cleanup()
-		
-	def set_mode(self, mode):
-		self._mode = mode
 
 
 class BTObserver(Observer):

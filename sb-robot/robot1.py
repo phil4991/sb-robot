@@ -6,13 +6,13 @@ import os, sys
 if sys.platform != 'win32':
 	assert os.getuid() == 0, "root privilage is needed. run as sudo"
 
-from bluedot import BlueDot
-from core.helpers 						import Configuration, IO
-from core.events						import Event
-from core.state							import StateMachine
+from bluedot 				import BlueDot
+from core.helpers 			import Configuration, IO
+from core.events			import Event
+from core.state				import StateMachine
 
-from drivecontroller.drivecontroller 	import (RobotController, BTObserver)
-from DAQ.daq_suite						import DAQController
+from motion.motion_suite 	import (MotionController, BTObserver)
+from DAQ.daq_suite			import DAQController
 
 APP_DIRECTORY 	= 'sb-robot'
 DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
@@ -26,14 +26,15 @@ config = Configuration.importConfig(CONFIG_PATH)
 # +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # 
 
-controller 	 = RobotController()
+
 bluedot 	 = BlueDot()
 bt_observer  = BTObserver()
 statemachine = StateMachine()
 io_module	 = IO()
 daq_controller = DAQController()
+motion_controller = MotionController()
 
-controller.configure(config)
+motion.configure(config)
 io_module.configure(config)
 daq_controller.configure(config)
 
