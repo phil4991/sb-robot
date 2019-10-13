@@ -5,7 +5,12 @@ import abc, sys
 from time 					import time, sleep
 from RTIMU 					import Settings, RTIMU
 from threading 				import Thread, Lock
-from concurrent.futures 	import ThreadPoolExecutor
+
+# package imports
+if __name__ != '__main__':
+	from ..events 	import ThreadPoolExecutorStackTraced
+else:
+	from core.events 	import ThreadPoolExecutorStackTraced
 
 class BasicSensor(abc.ABC):
 	def __init__(self, name):
@@ -58,7 +63,7 @@ class DAQController():
 		self.current_pollIntervall = 0
 		self._loop_running = False
 
-		self._ThreadWorker = ThreadPoolExecutor().__enter__()
+		self._ThreadWorker = ThreadPoolExecutorStackTraced().__enter__()
 		self.pipeline = DataPipeline()
 
 	def configure(self, config):

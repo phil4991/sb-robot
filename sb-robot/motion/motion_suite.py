@@ -3,12 +3,19 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 import abc
 
-from concurrent.futures 	import ThreadPoolExecutor
 from time 					import time, sleep
 
-# modules
-from core.events 	import Event, Observer # module not found! in init übernehmen?
-from core.helpers	import LEFT, RIGHT
+# package imports
+if __name__ != '__main__':
+	from ..events 	import (Event, 
+							Observer, 
+							ThreadPoolExecutorStackTraced) # module not found! in init übernehmen?
+	from ..helpers	import LEFT, RIGHT
+else:
+	from core.events 	import (Event, 
+								Observer, 
+								ThreadPoolExecutorStackTraced) # module not found! in init übernehmen?
+	from core.helpers	import LEFT, RIGHT
 
 class DCMotor:
 	def __init__(self, name, PINS, PWM_Frequecy = 200 ):
@@ -55,7 +62,7 @@ class MotionController:
 		self._looping = True
 		self.command = None
 
-		self._ThreadWorker = ThreadPoolExecutor().__enter__()
+		self._ThreadWorker = ThreadPoolExecutorStackTraced().__enter__()
 
 	def configure(self, config):
 		print('initializing hardware...')
@@ -102,6 +109,7 @@ class MotionController:
 		self._ThreadWorker.submit(_start_check_pipeline, pipeline)
 
 	def stop(self):
+		self._stop_checking()
 		self._ThreadWorker.__exit__(None, None, None)
 		GPIO.cleanup()
 

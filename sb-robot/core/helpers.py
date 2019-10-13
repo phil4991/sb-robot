@@ -1,6 +1,7 @@
-import json, os
+import json, os, sys, traceback
 import RPi.GPIO as GPIO
 
+from concurrent.futures import ThreadPoolExecutor
 # ++++++++++++++++++++++++++++
 # constants
 LEFT = 0
@@ -61,6 +62,28 @@ class IO():
 		for val in pipeline:
 			print('time: ', val['time'], 'accel: ', val['IMU']['accel'])
 
+
+class ThreadPoolExecutorStackTraced(ThreadPoolExecutor):
+
+    def submit(self, fn, *args, **kwargs):
+        """Submits the wrapped function instead of `fn`"""
+
+        return super(ThreadPoolExecutorStackTraced, self).submit(
+            self._function_wrapper, fn, *args, **kwargs)
+
+    def _function_wrapper(self, fn, *args, **kwargs):
+        """Wraps `fn` in order to preserve the traceback of any kind of
+        raised exception
+
+        """
+        try:
+            return fn(*args, **kwargs)
+        except Exception:
+            raise sys.exc_info()[0](traceback.format_exc())  # Creates an
+                                                             # exception of the
+                                                             # same type with the
+                                                             # traceback as
+                                                             # message
 
 
 if __name__ == '__main__':
