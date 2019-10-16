@@ -11,7 +11,9 @@ once it's finished.
 
 2019-08 implementing basic code for `motion/` & `core/` packages..
 
-2019-07 tested the first controller code with the new hardware on the RPi
+2019-08 implementing basic code for `motion/` & `core/` packages..
+
+2019-07 tested the controller code on the RPi
 
 2019-02 first code for the controller implemented in robot.py
 
