@@ -62,6 +62,8 @@ class MotionController:
 		self._looping = True
 		self.command = None
 
+		self.DataPipeline = None
+
 		self._ThreadWorker = ThreadPoolExecutorStackTraced().__enter__()
 
 	def configure(self, config):
@@ -90,19 +92,28 @@ class MotionController:
 	def _start_check_pipeline(self, pipeline):
 		print('MOTION: starting loop..', pipeline)
 		while self._looping:
-			sleep(0.05)
-			if len(pipeline) > 1:
-				print('MOTION: checked pipeline length')
-				accel = pipeline[-1]['IMU']['accel']
-			else:
-				accel = (0, 0, 0)
-			print('MOTION: found data:', accel)
 			print('MOTION: looping')
+			sleep(0.01)
+			
+			item = self.DataPipeline.get_item()
+			if item is None:
+				sleep(0.01)
+				continue
+			else:
+				accel = item.IMU['accel']
+				print('MOTION: found data', accel)
+
+#			if not pipeline:
+#				sleep(0.01)
+#				continue
+#			else:
+#				item = pipeline[-1]
+#				accel = item.IMU['accel']
 
 			alpha = math.atan2(accel[0], accel[2])
-			print(round(alpha, 3))
+#			print(round(alpha, 3))
 
-			if alpha >= 0:
+			if alpha > 0:
 				self._forward()
 			elif alpha < 0:
 				self._backward()
