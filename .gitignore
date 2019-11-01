@@ -1,13 +1,16 @@
 # Specify filepatterns you want git to ignore.
 # +++++++++++++++++++++++++++++++
-# specfic files
+# specific files
 tests/RTIMULib.ini
 # +++++++++++++++++++++++++++++++
 # file types
 *.pyc
 *.pyo
+
+*.slxc
 # +++++++++++++++++++++++++++++++
 #  specific folders
 docs/
 tests/RTEllipsoidFit/
 tests/fig/
+sim/slprj/
