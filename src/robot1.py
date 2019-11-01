@@ -12,7 +12,7 @@ from core.events			import Event
 from core.state				import StateMachine
 
 from motion.motion_suite 	import (MotionController, BTObserver)
-from DAQ.daq_suite			import DAQController
+from daq.daq_suite			import DAQController
 
 APP_DIRECTORY 	= 'sb-robot'
 DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
