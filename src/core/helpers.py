@@ -59,8 +59,8 @@ class IO():
 		return True
 
 	def print_pipeline(self, pipeline):
-		for val in pipeline:
-			print('time: ', val['time'], 'accel: ', val['IMU']['accel'])
+		for entry in pipeline:
+			print('time: ', entry.time, 'accel: ', entry.IMU['accel'])
 
 
 class ThreadPoolExecutorStackTraced(ThreadPoolExecutor):

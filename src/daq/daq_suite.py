@@ -5,6 +5,7 @@ import abc, sys
 from time 					import time, sleep
 from RTIMU 					import Settings, RTIMU
 from threading 				import Thread, Lock
+from collections 				import namedtuple, deque
 
 # package imports
 if __name__ == '__main__':
@@ -29,32 +30,35 @@ class BasicSensor(abc.ABC):
 
 class DataPipeline:
 	def __init__(self):
-		self._buffer = list()
+		self._buffer = deque(maxlen=5)
 
 		self._producer_lock = Lock()
 		self._consumer_lock = Lock()
-#		self._consumer_lock.acquire()
+		self._consumer_lock.acquire()
 
 
 	def add_item(self, item):
-#		self._producer_lock.acquire()
+		print('PIPELINE: about to add an item')
+		self._producer_lock.acquire()
+
 		self._buffer.append(item)
-		if len(self._buffer) > 10:
-			del self._buffer[0]
-#		self._producer_lock.release()
-#		self._consumer_lock.release()
+		if len(self._buffer) > 5:
+			self._buffer.popleft()
+			print('PIPELINE: deleted buffer value!')
+
+		self._consumer_lock.release()
 
 	def get_item(self):
-		self._consumer_lock.acquire()
-		if self._buffer:
-			data = self._buffer[-1]
-			self._producer_lock.release()
-			self._consumer_lock.release()
-			return data
-		else:
-			self._producer_lock.release()
-			self._consumer_lock.release()
-			return None
+		if self._consumer_lock.acquire(blocking=False):
+			if self._buffer:
+				data = self._buffer[-1]
+				self._producer_lock.release()
+				return data
+			else:
+				self._producer_lock.release()
+				return None
+		print('PIPELINE: tried to get an item')
+		return None
 
 
 class DAQController():
@@ -94,21 +98,18 @@ class DAQController():
 
 		reading = False
 		print('starting loop...')
-		print('sensors: ', self._sensors, dir(self._sensors['IMU']))
+		print('sensors: ', self._sensors)
+		data_buf = namedtuple('DataEntry', ['time', *self._sensors.keys()])
+
 		while self._loop_running:
-			print('looping')
+			print('DAQ: looping..')
 			t = round(time(), 3)
-			sleep((self.current_pollIntervall+15)/1000.0)
-			data_buf = dict.fromkeys(['time', *self._sensors.keys()])
-			data_buf['time'] = round(t - t_0, 3)
-			data_buf['IMU'] = self._sensors['IMU'].read()
+			sleep((self.current_pollIntervall+8)/1000.0)
+
+			data_buf.time = round(t - t_0, 3)
+			data_buf.IMU = self._sensors['IMU'].read()
+
 			self.pipeline.add_item(data_buf)
-
-#			if self._sensors['IMU'].interrupt_flag:
-#				print('done')
-#			else:
-#				print('skipped IMU')
-
 
 
 	def _stop_writing(self):
@@ -151,9 +152,11 @@ class IMU(BasicSensor):
 	def read(self):
 		if self.IMU.IMURead():
 			data = self.IMU.getIMUData()
+#			print('IMU: got IMU data..')
 			self.interrupt_flag = False
 			return data
 		else:
+#			print('IMU: reading IMU failed!')
 			return -1
 
 
