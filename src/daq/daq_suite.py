@@ -67,7 +67,7 @@ class DAQController():
 		self.current_pollIntervall = 0
 		self._loop_running = False
 
-		self._ThreadWorker = ThreadPoolExecutorStackTraced().__enter__()
+		self._thread = Thread(target=self._write_to_pipeline, daemon=True)
 		self.pipeline = DataPipeline()
 
 	def configure(self, config):
@@ -85,18 +85,17 @@ class DAQController():
 
 
 	def start(self):
-		print('starting worker...')
-		self._ThreadWorker.submit(self._write_to_pipeline)
+		print('starting aquisition thread...')
+		self._thread.start()
 
 	def stop(self):
 		self._stop_writing()
-		self._ThreadWorker.__exit__(None, None, None)
+		print('stopped aquisition thread')
 
 	def _write_to_pipeline(self):
 		self._loop_running = True
 		t_0 = round(time(), 3)
 
-		reading = False
 		print('starting loop...')
 		print('sensors: ', self._sensors)
 		data_buf = namedtuple('DataEntry', ['time', *self._sensors.keys()])

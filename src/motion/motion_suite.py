@@ -4,6 +4,7 @@ GPIO.setmode(GPIO.BCM)
 import abc, math
 
 from time 					import time, sleep
+from threading 				import Thread
 
 # package imports
 if __name__ == '__main__':
@@ -64,7 +65,7 @@ class MotionController:
 
 		self.DataPipeline = None
 
-		self._ThreadWorker = ThreadPoolExecutorStackTraced().__enter__()
+		self._thread = Thread(target=self._start_check_pipeline, daemon=True)
 
 	def configure(self, config):
 		print('initializing hardware...')
@@ -103,15 +104,7 @@ class MotionController:
 				accel = item.IMU['accel']
 				print('MOTION: found data', accel)
 
-#			if not pipeline:
-#				sleep(0.01)
-#				continue
-#			else:
-#				item = pipeline[-1]
-#				accel = item.IMU['accel']
-
 			alpha = math.atan2(accel[0], accel[2])
-#			print(round(alpha, 3))
 
 			if alpha > 0:
 				self._forward()
@@ -123,11 +116,10 @@ class MotionController:
 		self._looping = False
 
 	def start(self, pipeline):
-		self._ThreadWorker.submit(self._start_check_pipeline, pipeline)
+		self._thread.start()
 
 	def stop(self):
 		self._stop_checking()
-		self._ThreadWorker.__exit__(None, None, None)
 		print('MOTION: stopped')
 		GPIO.cleanup()
 
