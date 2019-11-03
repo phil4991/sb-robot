@@ -1,4 +1,7 @@
-# standards
+# motion module for actuator and montion control classes 
+# 
+
+# module imports
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 import abc, math
@@ -60,8 +63,7 @@ class MotionController:
 	def __init__(self):
 		self._motors	= {	LEFT: None,
 							RIGHT: None}
-		self._looping = True
-		self.command = None
+		self._loop_running = False
 
 		self.DataPipeline = None
 
@@ -90,9 +92,10 @@ class MotionController:
 		self._motors[LEFT].drive_ccw()
 		self._motors[RIGHT].drive_cw()
 
-	def _start_check_pipeline(self, pipeline):
-		print('MOTION: starting loop..', pipeline)
-		while self._looping:
+	def _start_check_pipeline(self):
+		print('MOTION: starting loop..')
+		self._loop_running = True
+		while self._loop_running:
 			print('MOTION: looping')
 			sleep(0.01)
 			
@@ -113,7 +116,7 @@ class MotionController:
 
 	
 	def _stop_checking(self):
-		self._looping = False
+		self._loop_running = False
 
 	def start(self, pipeline):
 		self._thread.start()
@@ -148,11 +151,5 @@ class Command(abc.ABC):
 	@abc.abstractmethod
 	def getThrottle(self, command):
 		pass
-
-
-if __name__ == '__main__':
-	
-	MyRobot = RobotController()
-	print(MyRobot)
 
 
