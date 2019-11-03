@@ -1,31 +1,16 @@
-# daq module for all sensor specific classes 2019-09-16
+# daq module for all data aqisition and handling specific classes 2019-09-16
 # 
 
+# module imports
 import abc, sys
 from time 					import time, sleep
-from RTIMU 					import Settings, RTIMU
 from threading 				import Thread, Lock
-from collections 				import namedtuple, deque
+from collections 			import namedtuple, deque
+
+from sensors 				import IMU
 
 # package imports
-if __name__ == '__main__':
-	from ..helpers 	import ThreadPoolExecutorStackTraced
-else:
-	from core.helpers 	import ThreadPoolExecutorStackTraced
-
-class BasicSensor(abc.ABC):
-	def __init__(self, name):
-		self.name = name
-		self.pollIntervall = 0
-		self.interrupt_flag = True
-
-	@abc.abstractmethod
-	def configure(self, config, pipeline):
-		pass
-
-	@abc.abstractmethod
-	def read(self):
-		pass
+# None
 
 
 class DataPipeline:
@@ -108,60 +93,8 @@ class DAQController():
 			data_buf.time = round(t - t_0, 3)
 			data_buf.IMU = self._sensors['IMU'].read()
 
-			self.pipeline.add_item(data_buf)
-
+			self.DataPipeline.add_item(data_buf)
 
 	def _stop_writing(self):
 		self._loop_running = False
 
-
-
-class IMU(BasicSensor):
-	def __init__(self, name, settingsFile):
-		super().__init__(name)
-		self.settings = Settings(settingsFile)
-		print('settings file loaded succesfully from ', settingsFile)
-
-		self.IMU = RTIMU(self.settings)
-		self.IMU_IP = None
-		self.IMU_PORT = None
-
-
-	def configure(self, config, pipeline=None):
-		imu_config = config['IMU']
-
-		self.IMU_IP = imu_config['IP']
-		self.IMU_PORT = imu_config['PORT']
-
-		print('initilizing IMU...')
-		if not self.IMU.IMUInit():
-			assert 0, 'IMU could not be initilized'
-
-		self.IMU.setSlerpPower(imu_config['slerpPower'])  
-		self.IMU.setGyroEnable(True)  
-		self.IMU.setAccelEnable(True)  
-		self.IMU.setCompassEnable(True) 
-
-		self.pollIntervall = self.IMU.IMUGetPollInterval()
-		print('set IMU pollintervall to ', self.pollIntervall)
-
-		if pipeline is not None:
-			self.pipeline = pipeline
-
-	def read(self):
-		if self.IMU.IMURead():
-			data = self.IMU.getIMUData()
-#			print('IMU: got IMU data..')
-			self.interrupt_flag = False
-			return data
-		else:
-#			print('IMU: reading IMU failed!')
-			return -1
-
-
-
-class WheelEncoder(BasicSensor):
-	pass
-
-class UltrasonicSensor(BasicSensor):
-	pass
