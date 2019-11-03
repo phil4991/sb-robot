@@ -68,11 +68,11 @@ class DAQController():
 		self._loop_running = False
 
 		self._thread = Thread(target=self._write_to_pipeline, daemon=True)
-		self.pipeline = DataPipeline()
+		self.DataPipeline = DataPipeline()
 
 	def configure(self, config):
 		self._sensors['IMU'] = IMU('IMU', '../data/' + config['IMU']['settings_file'])
-		self._sensors['IMU'].configure(config, self.pipeline)
+		self._sensors['IMU'].configure(config)
 		print('setting maximum polling time..')
 		minimum = 1000		# huge value to start
 		for name, sensor in self._sensors.items():
