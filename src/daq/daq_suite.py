@@ -15,28 +15,30 @@ from sensors 				import IMU
 
 class DataPipeline:
 	def __init__(self):
-		self._buffer = deque(maxlen=5)
+		self._daq_buffer = deque(maxlen=5)
 
 		self._producer_lock = Lock()
 		self._consumer_lock = Lock()
 		self._consumer_lock.acquire()
 
+	def _choose_buffer(self, key):
+		pass
 
 	def add_item(self, item):
 		print('PIPELINE: about to add an item')
 		self._producer_lock.acquire()
 
-		self._buffer.append(item)
-		if len(self._buffer) > 5:
-			self._buffer.popleft()
+		self._daq_buffer.append(item)
+		if len(self._daq_buffer) > 5:
+			self._daq_buffer.popleft()
 			print('PIPELINE: deleted buffer value!')
 
 		self._consumer_lock.release()
 
 	def get_item(self):
 		if self._consumer_lock.acquire(blocking=False):
-			if self._buffer:
-				data = self._buffer[-1]
+			if self._daq_buffer:
+				data = self._daq_buffer[-1]
 				self._producer_lock.release()
 				return data
 			else:
