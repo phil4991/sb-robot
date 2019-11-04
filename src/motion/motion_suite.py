@@ -118,7 +118,7 @@ class MotionController:
 	def _stop_checking(self):
 		self._loop_running = False
 
-	def start(self, pipeline):
+	def start(self):
 		self._thread.start()
 
 	def stop(self):
