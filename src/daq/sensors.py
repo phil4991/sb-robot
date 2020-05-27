@@ -1,13 +1,13 @@
-# module for all sensor specific classes 2019-11-03
-# 
+"""module for all sensor specific classes 2019-11-03
+"""
 
 # module imports
 import abc
 
 from RTIMU 	    import Settings, RTIMU
+from core.configuration import load_config_file
 
-# package imports
-# None
+config = load_config_file()
 
 class BasicSensor(abc.ABC):
 	def __init__(self, name):
@@ -27,19 +27,19 @@ class BasicSensor(abc.ABC):
 class IMU(BasicSensor):
 	def __init__(self, name, settingsFile):
 		super().__init__(name)
-		self.settings = Settings(settingsFile)
+
+		self.IMU = RTIMU(Settings(settingsFile))
 		print('settings file loaded succesfully from ', settingsFile)
 
-		self.IMU = RTIMU(self.settings)
 		self.IMU_IP = None
 		self.IMU_PORT = None
 
 
 	def configure(self, config):
-		imu_config = config['IMU']
+		imu_config = config['imu']
 
-		self.IMU_IP = imu_config['IP']
-		self.IMU_PORT = imu_config['PORT']
+		self.IMU_IP = imu_config['ip']
+		self.IMU_PORT = imu_config['port']
 
 		print('initilizing IMU...')
 		if not self.IMU.IMUInit():

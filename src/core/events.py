@@ -1,9 +1,10 @@
-# Events 2019-08-11
-# event structure for controllers
-# 
-# class overview
-# 	- Handler
-# 	- Event
+"""Events 2019-08-11
+event structure for controllers
+ 
+class overview
+	- Handler
+	- Event	
+"""
 
 
 class Observer():

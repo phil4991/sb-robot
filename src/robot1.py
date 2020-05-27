@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+"""Runner file for robot	2019-09-03
+"""
 
-# Runner file for robot	2019-09-03
-# 
 import os, sys
 if sys.platform != 'win32':
 	assert os.getuid() == 0, "root privilage is needed. run as sudo"
@@ -17,15 +17,6 @@ from daq.daq_suite			import DAQController
 APP_DIRECTORY 	= 'sb-robot'
 DATA_DIRECTORY 	= os.path.relpath('data', APP_DIRECTORY)
 
-CONFIG_FILE = 'config.json'
-CONFIG_PATH = os.path.join(DATA_DIRECTORY, CONFIG_FILE)
-
-config = Configuration.importConfig(CONFIG_PATH)
-
-# 
-# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# 
-
 
 bluedot 	 = BlueDot()
 bt_observer  = BTObserver()
@@ -35,9 +26,8 @@ daq_controller = DAQController()
 motion_controller = MotionController()
 motion_controller.DataPipeline = daq_controller.DataPipeline
 
-motion_controller.configure(config)
-io_module.configure(config)
-daq_controller.configure(config)
+motion_controller.configure()
+daq_controller.configure()
 
 movedDot = Event('movedDotEvent')
 pressedDot = Event('pressedDotEvent')
