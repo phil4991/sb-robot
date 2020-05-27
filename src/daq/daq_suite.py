@@ -27,13 +27,13 @@ class DataPipeline:
 		pass
 
 	def add_item(self, item):
-		print('PIPELINE: about to add an item')
+		# print('PIPELINE: about to add an item')
 		self._producer_lock.acquire()
 
 		self._daq_buffer.append(item)
 		if len(self._daq_buffer) > 5:
 			self._daq_buffer.popleft()
-			print('PIPELINE: deleted buffer value!')
+			# print('PIPELINE: deleted buffer value!')
 
 		self._consumer_lock.release()
 
@@ -46,7 +46,7 @@ class DataPipeline:
 			else:
 				self._producer_lock.release()
 				return None
-		print('PIPELINE: tried to get an item')
+		# print('PIPELINE: tried to get an item')
 		return None
 
 
@@ -90,7 +90,6 @@ class DAQController():
 		data_buf = namedtuple('DataEntry', ['time', *self._sensors.keys()])
 
 		while self._loop_running:
-			print('DAQ: looping..')
 			t = round(time(), 3)
 			sleep((self.current_pollIntervall+8)/1000.0)
 

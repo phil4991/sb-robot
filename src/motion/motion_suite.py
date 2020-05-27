@@ -59,10 +59,9 @@ class MotionController:
 	def __init__(self):
 		self._motors	= {	LEFT: None,
 							RIGHT: None}
-		self._loop_running = False
-
 		self.DataPipeline = None
 
+		self._loop_running = False
 		self._thread = Thread(target=self._start_check_pipeline, daemon=True)
 
 	def configure(self):
