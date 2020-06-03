@@ -7,11 +7,11 @@ if sys.platform != 'win32':
 	assert os.getuid() == 0, "root privilage is needed. run as sudo"
 
 from bluedot 				import BlueDot
-from core.helpers 			import Configuration, IO
+from core.helpers 			import IO
 from core.events			import Event
 from core.state				import StateMachine
 
-from motion.motion_suite 	import (MotionController, BTObserver)
+from motion.motion_suite 		import (MotionController, BTObserver)
 from daq.daq_suite			import DAQController
 
 APP_DIRECTORY 	= 'sb-robot'
@@ -53,6 +53,6 @@ print('MAIN: waiting for command..')
 if io_module.wait_for_command(statemachine.disable_control):
 	daq_controller.stop()
 	motion_controller.stop()
-	io_module.print_pipeline(daq_controller.pipeline._buffer)
+	io_module.print_pipeline(daq_controller.DataPipeline._daq_buffer)
 
 print('MAIN: program exit in state {}'.format(statemachine.state))

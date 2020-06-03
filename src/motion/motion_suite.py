@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 import abc, math
 
-from time 					import time, sleep
+from time 				import time, sleep
 from threading 				import Thread
 
 # package imports
@@ -91,7 +91,7 @@ class MotionController:
 		print('MOTION: starting loop..')
 		self._loop_running = True
 		while self._loop_running:
-			print('MOTION: looping')
+			# print('MOTION: looping')
 			sleep(0.01)
 			
 			item = self.DataPipeline.get_item()
@@ -100,7 +100,7 @@ class MotionController:
 				continue
 			else:
 				accel = item.IMU['accel']
-				print('MOTION: found data', accel)
+				# print('MOTION: found data', accel)
 
 			alpha = math.atan2(accel[0], accel[2])
 

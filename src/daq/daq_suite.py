@@ -3,13 +3,13 @@
 
 # module imports
 import abc, sys
-from time 					import time, sleep
+from time 				import time, sleep
 from threading 				import Thread, Lock
 from collections 			import namedtuple, deque
 
 
 # package imports
-from sensors 				import IMU
+from daq.sensors 				import IMU
 from core.configuration 	import load_config_file
 
 

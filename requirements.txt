@@ -1,3 +1,4 @@
-bluedot
+PyYAML
 transitions
+bluedot
 RPi.GPIO
