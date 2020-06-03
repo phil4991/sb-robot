@@ -25,6 +25,7 @@ t_fail_timer = 0.0
 t_shutdown = 0  
  
 if (not imu.IMUInit()):  
+	print('Init successful!')
 	hack = time.time()  
 	imu_sentence = "$IIXDR,IMU_FAILED_TO_INITIALIZE*7C"  
 	if (hack - t_print) > 1.0:  
