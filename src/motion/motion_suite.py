@@ -1,5 +1,5 @@
-# motion module for actuator and montion control classes 
-# 
+"""motion module for actuator and montion control classes 
+"""
 
 # module imports
 import RPi.GPIO as GPIO
@@ -10,16 +10,12 @@ from time 					import time, sleep
 from threading 				import Thread
 
 # package imports
-if __name__ == '__main__':
-	from ..events 	import (Event, 
-							Observer)
-	from ..helpers	import LEFT, RIGHT, ThreadPoolExecutorStackTraced
-
-else:
-	from core.events 	import (Event, 
+from core.events 		import (Event, 
 								Observer)
-	from core.helpers	import LEFT, RIGHT, ThreadPoolExecutorStackTraced
+from core.helpers		import LEFT, RIGHT, ThreadPoolExecutorStackTraced
+from core.configuration import load_config_file
 
+config = load_config_file()
 
 class DCMotor:
 	def __init__(self, name, PINS, PWM_Frequecy = 200 ):
@@ -63,13 +59,12 @@ class MotionController:
 	def __init__(self):
 		self._motors	= {	LEFT: None,
 							RIGHT: None}
-		self._loop_running = False
-
 		self.DataPipeline = None
 
+		self._loop_running = False
 		self._thread = Thread(target=self._start_check_pipeline, daemon=True)
 
-	def configure(self, config):
+	def configure(self):
 		print('initializing hardware...')
 
 		for pins in config['gpio']:

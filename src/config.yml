@@ -1,0 +1,29 @@
+core:
+  click_speed: 300
+
+bt:
+  devs: ["OnePlus 6"]
+  MAC: ["64:A2:F9:2F:6A:9B"]
+
+motorGLOBAL:
+  f_PWM: 200
+
+gpio:
+  - name: "leftMotor"
+    type: [0]             # output pin 
+    pins: [12, 20, 16]
+  - name: "rightMotor"
+    type: [0]             # output pin
+    pins: [13, 26, 19]
+  - name: "LED_STATUS_BT"
+    type: [0]             # output pin
+    pins: [14]
+  - name: "BTN_CHANGE_MODE"
+    type: [1, 21]         # input pin, pulled down
+    pins: [15]
+
+imu:
+  settings_file:  "RTIMULib"
+  ip:             "127.0.0.2"
+  port:           5005
+  slerpPower:     0.02

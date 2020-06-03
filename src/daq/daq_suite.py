@@ -1,5 +1,5 @@
-# daq module for all data aqisition and handling specific classes 2019-09-16
-# 
+"""daq module for all data aqisition and handling specific classes 2019-09-16
+""" 
 
 # module imports
 import abc, sys
@@ -7,11 +7,13 @@ from time 					import time, sleep
 from threading 				import Thread, Lock
 from collections 			import namedtuple, deque
 
-from sensors 				import IMU
 
 # package imports
-# None
+from sensors 				import IMU
+from core.configuration 	import load_config_file
 
+
+config = load_config_file()
 
 class DataPipeline:
 	def __init__(self):
@@ -25,13 +27,13 @@ class DataPipeline:
 		pass
 
 	def add_item(self, item):
-		print('PIPELINE: about to add an item')
+		# print('PIPELINE: about to add an item')
 		self._producer_lock.acquire()
 
 		self._daq_buffer.append(item)
 		if len(self._daq_buffer) > 5:
 			self._daq_buffer.popleft()
-			print('PIPELINE: deleted buffer value!')
+			# print('PIPELINE: deleted buffer value!')
 
 		self._consumer_lock.release()
 
@@ -44,7 +46,7 @@ class DataPipeline:
 			else:
 				self._producer_lock.release()
 				return None
-		print('PIPELINE: tried to get an item')
+		# print('PIPELINE: tried to get an item')
 		return None
 
 
@@ -57,9 +59,9 @@ class DAQController():
 		self._thread = Thread(target=self._write_to_pipeline, daemon=True)
 		self.DataPipeline = DataPipeline()
 
-	def configure(self, config):
-		self._sensors['IMU'] = IMU('IMU', '../data/' + config['IMU']['settings_file'])
-		self._sensors['IMU'].configure(config)
+	def configure(self):
+		self._sensors['imu'] = IMU('imu', '../data/' + config['imu']['settings_file'])
+		self._sensors['imu'].configure(config)
 		print('setting maximum polling time..')
 		minimum = 1000		# huge value to start
 		for name, sensor in self._sensors.items():
@@ -88,12 +90,11 @@ class DAQController():
 		data_buf = namedtuple('DataEntry', ['time', *self._sensors.keys()])
 
 		while self._loop_running:
-			print('DAQ: looping..')
 			t = round(time(), 3)
 			sleep((self.current_pollIntervall+8)/1000.0)
 
 			data_buf.time = round(t - t_0, 3)
-			data_buf.IMU = self._sensors['IMU'].read()
+			data_buf.IMU = self._sensors['imu'].read()
 
 			self.DataPipeline.add_item(data_buf)
 

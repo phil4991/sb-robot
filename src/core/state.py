@@ -1,5 +1,5 @@
-# statemachine module 2019-09-12
-# 	
+"""module for state handling of the robot
+""" 
 from transitions import Machine
 
 class StateMachine():
@@ -32,8 +32,6 @@ class StateMachine():
 		self.machine.add_transition(trigger='disable_bt', source=StateMachine.states[3], dest='balancing')
 		self.machine.add_transition(trigger='shutdown', source=StateMachine.states[3], dest=StateMachine.states[-1])
 
-		def function(self):
-			pass
 		
 
 
