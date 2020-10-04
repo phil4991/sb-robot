@@ -10,7 +10,6 @@ tests/RTIMULib.ini
 *.slxc
 # +++++++++++++++++++++++++++++++
 #  specific folders
-docs/
 tests/RTEllipsoidFit/
 tests/fig/
 sim/slprj/
